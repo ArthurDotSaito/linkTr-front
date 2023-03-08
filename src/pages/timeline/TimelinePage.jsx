@@ -12,7 +12,6 @@ const TimeLinePage = () =>{
             <TimelineMainContent>
                 <h1>timeline</h1>
                 <PostPublisher>
-
                 </PostPublisher>
             </TimelineMainContent>
         </TimelinePageContainer>

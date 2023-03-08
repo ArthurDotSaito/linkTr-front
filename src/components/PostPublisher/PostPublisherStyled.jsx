@@ -44,6 +44,15 @@ export const PostUrl = styled.input`
     height: 3.5rem;
     border-radius: 5px;
     border: none;
+    font-family: 'Lato';
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 24px;
+    letter-spacing: 0.05em;
+    color: #707070;
+    padding-left: 10px;
+    color: #949494;
+
     ::placeholder{
         font-family: 'Lato';
         font-weight: 300;
@@ -60,7 +69,14 @@ export const PostDescription = styled.input`
     background-color: #EFEFEF;
     height: 3.5rem;
     border-radius: 5px;
-    border: none;
+    border: none;    font-family: 'Lato';
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 24px;
+    letter-spacing: 0.05em;
+    color: #707070;
+    padding-left: 10px;
+    color: #949494;
     ::placeholder{
         font-family: 'Lato';
         font-weight: 300;
