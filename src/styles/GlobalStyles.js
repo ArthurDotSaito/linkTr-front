@@ -33,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
         line-height: 1;
         width: 100%;
         height: 100%;
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Passion One', sans-serif;
     }
     ol, ul {
         list-style: none;
@@ -57,7 +57,7 @@ const GlobalStyle = createGlobalStyle`
         padding: 0;
         margin: 0;
         box-sizing: border-box;
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Passion One', sans-serif;
     }
     button {
         border: none;
