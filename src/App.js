@@ -6,7 +6,9 @@ import LoginPage from "./components/LoginPage";
 
 function App() {
   const [user, setUser] = useState({});
-  const contextValue = { user, setUser };
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const contextValue = { user, setUser, token, setToken };
+
   return (
     <UserContext.Provider value={contextValue}>
       <BrowserRouter>
