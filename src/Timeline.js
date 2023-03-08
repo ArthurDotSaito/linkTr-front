@@ -15,7 +15,7 @@ export default function Timeline() {
     function Postar(event) {
         event.preventDefault();
         console.log("olá");
-        const requisicao = axios.post("http://localhost/timeline", {
+        const requisicao = axios.post("http://localhost:5000/timelines", {
             url,
             description,
         });
