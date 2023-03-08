@@ -14,6 +14,7 @@ const GlobalStyle = createGlobalStyle`
     figure, figcaption, footer, header, hgroup,
     menu, nav, output, ruby, section, summary,
     time, mark, audio, video, link {
+        width: 100%;
         margin: 0;
         padding: 0;
         border: 0;

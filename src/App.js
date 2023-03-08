@@ -1,16 +1,25 @@
-import React from "react";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Timeline from "./Timeline";
+import { useState } from "react";
+import UserContext from "./contexts/Context";
+import RegistrationPage from "./components/RegistrationPage";
+import LoginPage from "./components/LoginPage";
 
 function App() {
-    return(
-        <BrowserRouter>
-            <Routes>
-                <Route path="/timeline" element={<Timeline />} />
-            </Routes>
-        </BrowserRouter>
-    )
-   
+  const [user, setUser] = useState({});
+  const contextValue = { user, setUser };
+  return (
+    <UserContext.Provider value={contextValue}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+        </Routes>
+        <Routes>
+          <Route path="/signup" element={<RegistrationPage />} />
+        </Routes>
+      </BrowserRouter>
+    </UserContext.Provider>
+  );
 }
 
 export default App;
