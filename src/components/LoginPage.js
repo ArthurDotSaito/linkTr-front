@@ -18,9 +18,6 @@ export default function RegistrationPage() {
       email: email,
       password: password,
     };
-    if (!email || !password) {
-      alert("Fill in all fields");
-    }
 
     const promise = axios.post("http://localhost:5000/signin", request);
     promise.then((res) => {
@@ -29,8 +26,8 @@ export default function RegistrationPage() {
       setUser(res.data);
       navigate("/timeline");
     });
-    promise.catch(() => {
-      alert("E-mail or password are invalid!");
+    promise.catch((err) => {
+      alert(err.response.data);
     });
   }
   return (
@@ -45,14 +42,11 @@ export default function RegistrationPage() {
       <RightContainer>
         <FormContainer onSubmit={login}>
           <input
-            required
             placeholder="e-mail"
-            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></input>
           <input
-            required
             placeholder="password"
             type="password"
             value={password}
