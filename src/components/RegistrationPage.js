@@ -28,12 +28,12 @@ export default function RegistrationPage() {
       setIsLoading(false);
       navigate("/");
     });
-    promise.catch(() => {
+    promise.catch((err) => {
+      alert(err.response.data);
       setIsLoading(false);
       setEmail("");
       setPassword("");
       setUsername("");
-      alert("Something went wrong, fill in the fields again");
     });
   }
   return (
@@ -48,28 +48,24 @@ export default function RegistrationPage() {
       <RightContainer>
         <FormContainer onSubmit={signUpUser}>
           <input
-            required
             placeholder="e-mail"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></input>
           <input
-            required
             placeholder="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></input>
           <input
-            required
             placeholder="username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           ></input>
           <input
-            required
             placeholder="picture url"
             type="url"
             value={pictureUrl}
