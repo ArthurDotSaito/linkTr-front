@@ -1,15 +1,14 @@
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
-import UserContext from "./contexts/Context";
+import AuthProvider from "./contexts/Context";
 import RegistrationPage from "./components/RegistrationPage";
 import LoginPage from "./components/LoginPage";
+import Timeline from "./Timeline";
 
 function App() {
-  const [user, setUser] = useState({});
-  const contextValue = { user, setUser };
   return (
-    <UserContext.Provider value={contextValue}>
+    <AuthProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginPage />} />
@@ -17,8 +16,11 @@ function App() {
         <Routes>
           <Route path="/signup" element={<RegistrationPage />} />
         </Routes>
+        <Routes>
+          <Route path="/timelines" element={<Timeline />} />
+        </Routes>
       </BrowserRouter>
-    </UserContext.Provider>
+    </AuthProvider>
   );
 }
 

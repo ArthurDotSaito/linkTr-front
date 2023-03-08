@@ -15,10 +15,16 @@ export default function Timeline() {
     function Postar(event) {
         event.preventDefault();
         console.log("olá");
+
+        const config = {
+            headers: {Authorization: `Bearer ${token}`}
+        }
+
+
         const requisicao = axios.post("http://localhost:5000/timelines", {
             url,
             description,
-        });
+        },config);
         requisicao.then((response) => {
             console.log(response.data);
         });
