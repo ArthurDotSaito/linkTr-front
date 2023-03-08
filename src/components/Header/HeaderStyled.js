@@ -8,7 +8,7 @@ export const HeaderPageContainer = styled.header`
     background-color: #151515;
     justify-content: space-between;
     h1{
-        font-family: 'Passion-One';
+        font-family: 'Passion One';
         font-weight: 700;
         font-size: 1.9rem;
         line-height: 54px;
