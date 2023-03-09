@@ -53,7 +53,7 @@ export default function Timeline() {
             <Title>Linkr</Title>
             <Second>timeline</Second>
             <PublishPost>
-                <img src="https://www.lance.com.br/files/article1x1/uploads/2023/03/07/6407e30e59947.jpeg" />
+                <img src="" />
                 <div>
                     <p>What are you going to share today?</p>
                     <InputUrl type="text" placeholder="http:// ..." value={url} onChange={(e) => setUrl(e.target.value)}></InputUrl>
