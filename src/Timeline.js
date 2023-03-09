@@ -33,7 +33,6 @@ export default function Timeline() {
 
     };
 
-
     useEffect(() => {
         const promise = axios.get(`http://localhost:5000/timelines`);
         promise.then((response) => {
@@ -44,6 +43,7 @@ export default function Timeline() {
             console.log(erro);
         })
     },[]);
+
     return (
         <>
             <Header>
@@ -70,8 +70,8 @@ export default function Timeline() {
                                 </InfoUser>
                             </LeftInformations>
                             <UserOptions>
-                                <EditIcon></EditIcon>
-                                <RecycleBin></RecycleBin>
+                                <EditIcon idPost={post.postid}></EditIcon>
+                                <RecycleBin idPost={post.postid}></RecycleBin>
                             </UserOptions>
 
                         </ImageName>

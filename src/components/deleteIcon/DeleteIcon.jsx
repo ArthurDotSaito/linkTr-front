@@ -5,8 +5,16 @@ import styled from "styled-components";
 import { DeleteIconContainer,DeleteIcon, YesModalButton, NopeModalButton, ModalButtons } from "./DeleteIconStyled";
 import recycleBin from '../../assets/recycleBin.svg'
 
-export default function RecycleBin(){
+export default function RecycleBin(props){
     const [modalIsOpen, setModalIsOpen] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [postId, setPostId] = React.useState(props.idPost);
+    const token = localStorage.getItem('token');
+    console.log(postId);
+
+    const config = {
+        headers: {Authorization: `Bearer ${token}`}
+    }
 
     const openModal = () =>{
         setModalIsOpen(true)
@@ -16,12 +24,24 @@ export default function RecycleBin(){
         setModalIsOpen(false)
     }
 
+    const handleDeleteConfirm = async (postId) => {
+        try {
+          setIsLoading(true);
+          await axios.delete(`http://localhost:5000/timelines/${postId}`, config);
+          setIsLoading(false);
+          setModalIsOpen(false);
+        } catch (error) {
+          console.error(error);
+          setIsLoading(false);
+          setModalIsOpen(false);
+          alert("Não foi possível excluir o post.");
+        }
+      };
+
     const handleNopeModalButtonClick = (event) => {
         event.stopPropagation();
         closeModal();
     }
-
-    console.log(modalIsOpen)
 
     return(
         <DeleteIconContainer onClick={openModal}>
@@ -35,7 +55,7 @@ export default function RecycleBin(){
                     parentSelector={() => document.querySelector('#modal-root')}>
                         <h2>Are you sure you want to delete this post?</h2>
                         <ModalButtons>
-                            <YesModalButton>
+                            <YesModalButton onClick={() => handleDeleteConfirm(postId)}>
                                 <h3>Yes, delete it</h3>
                             </YesModalButton>
                             <NopeModalButton onClick={handleNopeModalButtonClick}>
