@@ -84,7 +84,7 @@ const SearchBar = styled(DebounceInput)`
     color: #C6C6C6;
     padding: 1rem;
 }
-`;
+`
 
 const ResultsContainer = styled.div`
   background-color:#E7E7E7;
