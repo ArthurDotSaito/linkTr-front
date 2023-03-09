@@ -11,8 +11,6 @@ export default function Timeline() {
     let token = localStorage.getItem("token");
 
 
-    
-
     function Postar(event) {
         event.preventDefault();
         console.log("olá");
@@ -41,9 +39,16 @@ export default function Timeline() {
         promise.then((response) => {
             setPosts(response.data);
             console.log(response.data);
+            if(response.data.length === 0){
+                alert("There are no posts yet");
+            }
+
         });
         promise.catch((erro) => {
             console.log(erro);
+            if(erro){
+                alert("An error occured while trying to fetch the posts, please refresh the page");
+            }
         })
     },[]);
     return (
@@ -61,6 +66,7 @@ export default function Timeline() {
                     <Publish onClick={Postar}>Publish</Publish>
                 </div>
             </PublishPost>
+                
                 {posts.map((post,index) => 
                 <UserPost key={index}>
                     <ImageName>
@@ -70,7 +76,7 @@ export default function Timeline() {
                             <p>{post.description}</p>
                         </InfoUser>
                     </ImageName>
-                    <ImageUrl>
+                    <ImageUrl onClick={()=> window.open(post.url, '_blank')}>
                         <Urls>
                             <p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><p>{post.url}</p> 
                         </Urls>
