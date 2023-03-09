@@ -8,6 +8,7 @@ export default function Timeline() {
     const [description, setDescription] = useState("");
     const [posts, setPosts] = useState([]);
 
+    let token = localStorage.getItem("token");
 
 
     
@@ -59,17 +60,15 @@ export default function Timeline() {
             </PublishPost>
             <GetPosts>
                 {posts.map((post,index) => 
-                <div key={index}>
-                    <img src={post.image} />
-                    <section>
-                        <PostName>{post.name}</PostName>
-                        <PostDescription>{post.description}</PostDescription>
-                    </section>
-                    <p>{post.titleUrl}</p>
-                    <p>{post.descriptionUrl}</p>
-                    <ImagePage src={post.imageUrl} />
-                     
-                </div>
+                <><div key={index}>
+                        <img src={post.image} />
+                        <section>
+                            <PostName>{post.name}</PostName>
+                            <PostDescription>{post.description}</PostDescription>
+                        </section>
+
+
+                    </div><p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><ImagePage src={post.imageUrl} /></>
                 
 
                 
@@ -95,6 +94,8 @@ const Title = styled.div`
     height: 54px;
     left: 28px;
     top: 10px;
+    margin-left:415px;
+
     
     font-family: 'Passion One';
     font-style: normal;
@@ -112,9 +113,11 @@ const PublishPost = styled.div`
     display:flex;
     flex-direction:column;
     align-items:center;
-    margin-top:43px;
+    justify-content:center;
+    margin-left:415px;
     width: 611px;
     height: 209px;
+    margin-top:43px;
 
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -168,11 +171,14 @@ const Second = styled.p`
     line-height: 64px;
     color: #FFFFFF;
     margin-top:78px;
+    margin-left:415px;
+
  `
  const GetPosts = styled.div`
     display:flex;
     margin-top:29px;
     flex-direction:column;
+    margin-left:415px;
 
     div{
         margin-top:16px;

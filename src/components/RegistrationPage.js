@@ -28,12 +28,12 @@ export default function RegistrationPage() {
       setIsLoading(false);
       navigate("/");
     });
-    promise.catch(() => {
+    promise.catch((err) => {
+      alert(err.response.data);
       setIsLoading(false);
       setEmail("");
       setPassword("");
       setUsername("");
-      alert("Something went wrong, fill in the fields again");
     });
   }
   return (
@@ -48,28 +48,24 @@ export default function RegistrationPage() {
       <RightContainer>
         <FormContainer onSubmit={signUpUser}>
           <input
-            required
             placeholder="e-mail"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></input>
           <input
-            required
             placeholder="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></input>
           <input
-            required
             placeholder="username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           ></input>
           <input
-            required
             placeholder="picture url"
             type="url"
             value={pictureUrl}
@@ -92,6 +88,11 @@ const MainContainer = styled.div`
   min-height: 100vh;
   display: flex;
   background-color: #333333;
+  @media (max-width: 1470px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 const LeftContainer = styled.div`
   display: flex;
@@ -100,6 +101,10 @@ const LeftContainer = styled.div`
   flex-direction: column;
   background-color: #151515;
   box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.25);
+  @media (max-width: 1470px) {
+    width: 100%;
+    height: 30vh;
+  }
 `;
 const Title = styled.div`
   font-family: "Passion One";
@@ -108,6 +113,14 @@ const Title = styled.div`
   letter-spacing: 0.05em;
   color: #ffffff;
   padding-left: 144px;
+  @media (max-width: 1470px) {
+    font-size: 76px;
+    line-height: 84px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0px;
+  }
 `;
 const SubTitle = styled.div`
   font-family: "Oswald";
@@ -115,6 +128,16 @@ const SubTitle = styled.div`
   line-height: 64px;
   color: #ffffff;
   padding-left: 144px;
+  @media (max-width: 1470px) {
+    font-size: 76px;
+    line-height: 84px;
+    font-size: 23px;
+    line-height: 34px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0px;
+  }
 `;
 const RightContainer = styled.div`
   width: 30%;
@@ -122,10 +145,17 @@ const RightContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  @media (max-width: 1470px) {
+    width: 100%;
+    height: 70vh;
+  }
 `;
 
 const FormContainer = styled.form`
-  padding-left: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   input {
     background-color: #ffffff;
     border-radius: 6px;
@@ -137,8 +167,13 @@ const FormContainer = styled.form`
     color: #9f9f9f;
     padding-left: 10px;
     margin-bottom: 13px;
+    @media (max-width: 1470px) {
+      width: 330px;
+      height: 55px;
+    }
   }
   p {
+    display: flex;
     justify-content: center;
     font-family: "Lato";
     font-size: 20px;
@@ -146,7 +181,10 @@ const FormContainer = styled.form`
     text-decoration-line: underline;
     color: #ffffff;
     margin-top: 14px;
-    padding-left: 125px;
+  }
+  @media (max-width: 1470px) {
+    width: 100%;
+    padding-bottom: 150px;
   }
 `;
 const SignUpButton = styled.button`
@@ -158,5 +196,13 @@ const SignUpButton = styled.button`
   font-size: 27px;
   line-height: 40px;
   color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   opacity: ${(props) => (!props.disabled ? "1" : "0.7")};
+  @media (max-width: 1470px) {
+    width: 330px;
+    height: 55px;
+    padding-left: 20px;
+  }
 `;

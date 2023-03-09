@@ -1,14 +1,19 @@
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
-import AuthProvider from "./contexts/Context";
 import RegistrationPage from "./components/RegistrationPage";
 import LoginPage from "./components/LoginPage";
 import Timeline from "./Timeline";
+import UserContext from "./contexts/Context";
+
 
 function App() {
+  const [user, setUser] = useState({});
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const contextValue = { user, setUser, token, setToken };
+
   return (
-    <AuthProvider>
+    <UserContext.Provider value={contextValue}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginPage />} />
@@ -20,7 +25,7 @@ function App() {
           <Route path="/timelines" element={<Timeline />} />
         </Routes>
       </BrowserRouter>
-    </AuthProvider>
+    </UserContext.Provider>
   );
 }
 
