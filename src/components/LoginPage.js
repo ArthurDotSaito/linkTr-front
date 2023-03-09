@@ -24,7 +24,7 @@ export default function RegistrationPage() {
       localStorage.setItem("token", res.data.token);
       setToken(res.data.token);
       setUser(res.data);
-      navigate("/timeline");
+      navigate("/timelines");
     });
     promise.catch((err) => {
       alert(err.response.data);
