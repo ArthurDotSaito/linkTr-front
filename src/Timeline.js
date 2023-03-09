@@ -7,10 +7,12 @@ export default function Timeline() {
     const [url, setUrl] = useState("");
     const [description, setDescription] = useState("");
     const [posts, setPosts] = useState([]);
+    const token = localStorage.getItem('token');
+    const headers = {
+        Authorization: `Bearer ${token}`,
+      };
 
-
-
-    
+    console.log(headers)
 
     function Postar(event) {
         event.preventDefault();
@@ -18,6 +20,7 @@ export default function Timeline() {
         const requisicao = axios.post("http://localhost:5000/timelines", {
             url,
             description,
+            headers
         });
         requisicao.then((response) => {
             console.log(response.data);
