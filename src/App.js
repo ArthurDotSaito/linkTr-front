@@ -1,9 +1,11 @@
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
-import UserContext from "./contexts/Context";
 import RegistrationPage from "./components/RegistrationPage";
 import LoginPage from "./components/LoginPage";
+import Timeline from "./Timeline";
+import UserContext from "./contexts/Context";
+
 
 function App() {
   const [user, setUser] = useState({});
@@ -18,6 +20,9 @@ function App() {
         </Routes>
         <Routes>
           <Route path="/signup" element={<RegistrationPage />} />
+        </Routes>
+        <Routes>
+          <Route path="/timelines" element={<Timeline />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
