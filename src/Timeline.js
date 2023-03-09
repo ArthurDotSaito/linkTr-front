@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Header from "./components/Header/Header";
 import RecycleBin from "./components/deleteIcon/DeleteIcon";
 import EditIcon from "./components/editIcon/EditIcon";
+import LikeIcon from "./components/likeIcon/LikeIcon";
 
 export default function Timeline() {
     const [url, setUrl] = useState("");
@@ -82,12 +83,18 @@ export default function Timeline() {
                                 <RecycleBin idPost={post.postid} posts={posts} setPosts={setPosts}></RecycleBin>
                             </UserOptions>
                         </ImageName>
-                        <ImageUrl>
-                            <Urls>
-                                <p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><p>{post.url}</p> 
-                            </Urls>
-                            <img src={post.imageUrl} />
-                        </ImageUrl>
+                        <LikeAndContentContainer>
+                            <LikeIcon
+                                idPost = {post.postid}
+                                likes = {post.likes}>
+                            </LikeIcon>
+                            <ImageUrl>
+                                <Urls>
+                                    <p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><p>{post.url}</p> 
+                                </Urls>
+                                <img src={post.imageUrl} />
+                            </ImageUrl>
+                        </LikeAndContentContainer>
                         
                     </UserPost>
                     )}
@@ -150,7 +157,6 @@ const ImageUrl = styled.div`
     width: 503px;
     height: 155px;
     margin-top:10px; 
-    margin-left: 4rem;
     border: 1px solid #4D4D4D;
     border-radius: 11px;
 `
@@ -176,6 +182,11 @@ const ImageName = styled.div`
     padding-left:18px;
     padding-top:17px;
     justify-content: space-between;
+`
+
+const LikeAndContentContainer = styled.section`
+    display: flex;
+    justify-content: center;
 `
 
 const LeftInformations = styled.section`
