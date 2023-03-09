@@ -2,6 +2,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Header from "./components/Header/Header";
+import RecycleBin from "./components/deleteIcon/DeleteIcon";
 
 export default function Timeline() {
     const [url, setUrl] = useState("");
@@ -58,13 +59,16 @@ export default function Timeline() {
                     </div>
                 </PublishPost>
                     {posts.map((post,index) => 
-                    <UserPost key={index}>
-                        <ImageName>
-                            <ImageUser src={post.image}/>
-                            <InfoUser className="infoUser">
-                                <p>{post.name}</p>
-                                <p>{post.description}</p>
-                            </InfoUser>
+                    <UserPost key={index} className="userPost">
+                        <ImageName className="imageName">
+                            <LeftInformations>
+                                <ImageUser src={post.image}/>
+                                <InfoUser className="infoUser">
+                                    <p>{post.name}</p>
+                                    <p>{post.description}</p>
+                                </InfoUser>
+                            </LeftInformations>
+                            <RecycleBin></RecycleBin>
                         </ImageName>
                         <ImageUrl>
                             <Urls>
@@ -159,9 +163,17 @@ const ImageName = styled.div`
     flex-direction:row;
     padding-left:18px;
     padding-top:17px;
+    justify-content: space-between;
+`
+
+const LeftInformations = styled.section`
+    display:flex;
+    flex-direction:row;
+    width: auto;
 `
 
 const InfoUser = styled.div`
+    width: auto;
     display:flex;
     flex-direction:column;
     margin-left:18px;
