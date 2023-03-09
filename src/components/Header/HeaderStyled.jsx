@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const HeaderPageContainer = styled.header`
-    width: 100%;
+    width: auto;
     height: 72px;
     display: flex;
     align-items: center;
@@ -34,4 +34,20 @@ export const ProfileImage = styled.figure`
     border-radius: 26px;
     background-color: red;
     margin-right: 5px;
+`
+
+export const SearchBar = styled.input`
+    width: 50%;
+    height: 3rem;
+    ::placeholder{
+        font-family: 'Lato', sans-serif;
+        font-weight: 400;
+        line-height: 22.8px;
+        color: #C6C6C6;
+        padding: 1rem;
+    }
+`
+export const SearchBarContainer = styled.section`
+    display: flex;
+    flex-direction: column;
 `

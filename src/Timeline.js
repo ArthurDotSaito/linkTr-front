@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Header from "./components/Header/Header"
 
 
 export default function Timeline() {
@@ -8,10 +9,7 @@ export default function Timeline() {
     const [description, setDescription] = useState("");
     const [posts, setPosts] = useState([]);
 
-    let token = localStorage.getItem("token");
-
-
-    
+    let token = localStorage.getItem("token");    
 
     function Postar(event) {
         event.preventDefault();
@@ -35,7 +33,6 @@ export default function Timeline() {
 
     };
 
-
     useEffect(() => {
         const promise = axios.get(`http://localhost:5000/timelines`);
         promise.then((response) => {
@@ -48,9 +45,7 @@ export default function Timeline() {
     },[]);
     return (
         <>
-            <Header>
-            </Header>
-            <Title>Linkr</Title>
+            <Header></Header>
             <Second>timeline</Second>
             <PublishPost>
                 <p>What are you going to share today?</p>
@@ -80,14 +75,6 @@ export default function Timeline() {
     );
 }
 
-const Header = styled.div`
-    position: absolute;
-    width: 1440px;
-    height: 72px;
-    left: 0px;
-    top: 0px;
-    background: #151515;
- `;
 const Title = styled.div`
     position: absolute;
     width: 108px;
@@ -114,7 +101,6 @@ const PublishPost = styled.div`
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    margin-left:415px;
     width: 611px;
     height: 209px;
     margin-top:43px;
@@ -178,7 +164,7 @@ const Second = styled.p`
     display:flex;
     margin-top:29px;
     flex-direction:column;
-    margin-left:415px;
+
 
     div{
         margin-top:16px;

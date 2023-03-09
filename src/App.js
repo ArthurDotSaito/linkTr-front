@@ -22,7 +22,7 @@ function App() {
           <Route path="/signup" element={<RegistrationPage />} />
         </Routes>
         <Routes>
-          <Route path="/timelines" element={<Timeline />} />
+          <Route path="/timeline" element={<Timeline />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
