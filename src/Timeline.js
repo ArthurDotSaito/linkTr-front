@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Header from "./components/Header/Header";
 import RecycleBin from "./components/deleteIcon/DeleteIcon";
 import EditIcon from "./components/editIcon/EditIcon";
@@ -10,6 +10,8 @@ export default function Timeline() {
     const [description, setDescription] = useState("");
     const [posts, setPosts] = useState([]);
     const token = localStorage.getItem('token');
+    const [editing, setEditing] = useState(false);
+    const descriptionRef = useRef(null);   
 
     function Postar(event) {
         event.preventDefault();
@@ -44,6 +46,8 @@ export default function Timeline() {
         })
     },[]);
 
+
+
     return (
         <>
             <Header>
@@ -70,10 +74,13 @@ export default function Timeline() {
                                 </InfoUser>
                             </LeftInformations>
                             <UserOptions>
-                                <EditIcon idPost={post.postid}></EditIcon>
-                                <RecycleBin idPost={post.postid}></RecycleBin>
+                                <EditIcon 
+                                    idPost={post.postid} 
+                                    posts={posts} 
+                                    setPosts={setPosts}
+                                    onClick={() => setEditing(true)}></EditIcon>
+                                <RecycleBin idPost={post.postid} posts={posts} setPosts={setPosts}></RecycleBin>
                             </UserOptions>
-
                         </ImageName>
                         <ImageUrl>
                             <Urls>

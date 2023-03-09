@@ -10,7 +10,18 @@ export default function RecycleBin(props){
     const [isLoading, setIsLoading] = React.useState(false);
     const [postId, setPostId] = React.useState(props.idPost);
     const token = localStorage.getItem('token');
-    console.log(postId);
+
+    React.useEffect(() => {
+        const promise = axios.get(`http://localhost:5000/timelines`);
+        promise.then((response) => {
+            props.setPosts(response.data);
+            console.log(response.data); 
+            props.setPosts(props.posts.filter(post => post.id !== postId));
+        });
+        promise.catch((erro) => {
+            console.log(erro);
+        })
+    },[]);
 
     const config = {
         headers: {Authorization: `Bearer ${token}`}
@@ -30,6 +41,8 @@ export default function RecycleBin(props){
           await axios.delete(`http://localhost:5000/timelines/${postId}`, config);
           setIsLoading(false);
           setModalIsOpen(false);
+          const response = await axios.get(`http://localhost:5000/timelines`);
+          props.setPosts(response.data);
         } catch (error) {
           console.error(error);
           setIsLoading(false);
@@ -55,8 +68,10 @@ export default function RecycleBin(props){
                     parentSelector={() => document.querySelector('#modal-root')}>
                         <h2>Are you sure you want to delete this post?</h2>
                         <ModalButtons>
-                            <YesModalButton onClick={() => handleDeleteConfirm(postId)}>
-                                <h3>Yes, delete it</h3>
+                            <YesModalButton 
+                                onClick={() => handleDeleteConfirm(postId)}
+                                disabled={isLoading}>
+                                <h3>{isLoading ? "Excluindo..." : "Yes, delete it"}</h3>
                             </YesModalButton>
                             <NopeModalButton onClick={handleNopeModalButtonClick}>
                                 <h3>No, go back</h3>
