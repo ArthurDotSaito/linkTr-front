@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import axios from "axios";
-import { useEffect, useState } from "react";
 import Trendings from "./components/trendings/trendings"
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +8,7 @@ import Header from "./components/Header/Header";
 import RecycleBin from "./components/deleteIcon/DeleteIcon";
 import EditIcon from "./components/editIcon/EditIcon";
 import LikeIcon from "./components/likeIcon/LikeIcon";
+import LikeList from "./components/peopleWhoLike/LikeList";
 
 export default function Timeline() {
     const [url, setUrl] = useState("");
@@ -16,39 +16,45 @@ export default function Timeline() {
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
+    const [numLikes, setNumLikes] = useState({})
     const [editing, setEditing] = useState(false);
     const descriptionRef = useRef(null);   
+    const [loaded, setLoaded] = useState(false)
 
     function Postar(event) {
         event.preventDefault();
         console.log("olá");
-
+    
         const config = {
             headers: {Authorization: `Bearer ${token}`}
         }
-
-
+    
         const requisicao = axios.post("http://localhost:5000/timelines", {
             url,
             description,
         },config);
+    
         requisicao.then((response) => {
             console.log(response.data);
+            setPosts([...posts, response.data]);
+            setUrl("");
+            setDescription("");
         });
+    
         requisicao.catch((err) => {
             console.log(err);
         })
-
     };
+    
 
     useEffect(() => {
         const promise = axios.get(`http://localhost:5000/timelines`);
         promise.then((response) => {
-            setPosts(response.data);
-            console.log(response.data);
+          setPosts(response.data);
+          console.log(response.data);
         });
         promise.catch((erro) => {
-            console.log(erro);
+          console.log(erro);
         })
     },[]);
     return (
@@ -89,20 +95,21 @@ export default function Timeline() {
                 </UserPost>
                 )}
             <Trendings/>
-        </>
-    )
+      }, []); 
+  )
 }
+
 const MainPageContainer = styled.main`
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-
 `
 
 const Urls = styled.div`
     display:flex;
     flex-direction:column;
+    padding-top:24px;
     p:nth-child(1){
         font-family: 'Lato';
         font-style: normal;
@@ -147,7 +154,6 @@ const ImageUrl = styled.div`
     height: 155px;
     left: 502px;
     top: 596px;
-    margin-left:87px;
     margin-top:10px;
 
     margin-top:10px; 
@@ -158,7 +164,6 @@ const ImageUrl = styled.div`
 const UserPost = styled.div`
     display:flex;
     flex-direction:column;
-    margin-left:415px;
 width: 611px;
 height: 276px;
 left: 415px;
@@ -190,6 +195,12 @@ const ImageName = styled.div`
 const LikeAndContentContainer = styled.section`
     display: flex;
     justify-content: center;
+`
+
+const LikeContainer = styled.section`
+    width: auto;
+    display: flex;
+    flex-direction: column;
 `
 
 const LeftInformations = styled.section`
@@ -228,14 +239,6 @@ const InfoUser = styled.div`
     }
 `
 
-const Header = styled.div`
-    position: absolute;
-    width: 1440px;
-    height: 72px;
-    left: 0px;
-    top: 0px;
-    background: #151515;
- `;
 const Title = styled.div`
     position: absolute;
     width: 108px;
@@ -263,7 +266,6 @@ const PublishPost = styled.div`
     flex-direction:row;
     align-items:center;
     justify-content:center;
-    margin-left:415px;
 
     width: 611px;
     height: 209px;
@@ -380,66 +382,9 @@ const Second = styled.p`
     line-height: 64px;
     color: #FFFFFF;
     margin-top:78px;
-    margin-left:415px;
  `
     const tagStyle = {
         color: 'white',
         fontWeight: 500,
         cursor: 'pointer'
     }
-
-//  const GetPosts = styled.div`
-//     display:flex;
-//     margin-top:29px;
-//     flex-direction:column;
-//     margin-left:415px;
-
-//     div{
-//         margin-top:16px;
-//         display:flex;
-//         flex-direction:colum;
-//         width: 611px;
-//         height: 276px;
-//         border-radius: 16px;
-//         padding-left:18px;
-//         padding-top:18px;
-//     }
-//     div img{
-//         width: 50px;
-//         height: 50px;
-//         border-radius: 26.5px;
-
-
-//     }
-//     div section{
-//         flex-direction:column;
-//         margin-left:18px;
-//     }
-//  `
-//  const PostName = styled.p`
-//     font-weight: 400;
-//     font-size: 19px;
-//     line-height: 23px;
-//     color: #FFFFFF;
-//  `
-//  const PostDescription = styled.p`
-//     font-style: normal;
-//     font-weight: 400;
-//     font-size: 17px;
-//     line-height: 20px;
-//     color: #B7B7B7;
-// `
-// const ImageUrl = styled.div`
-// width: 153.44px;
-// height: 155px;
-// left: 851.56px;
-// top: 596px;
-// `
-
-// const ImagePage = styled.img`
-//     width: 153.44px;
-//     height: 155px;
-// `
-// const AllUrl = styled.div`
-    
-// `
