@@ -5,49 +5,54 @@ import Header from "./components/Header/Header";
 import RecycleBin from "./components/deleteIcon/DeleteIcon";
 import EditIcon from "./components/editIcon/EditIcon";
 import LikeIcon from "./components/likeIcon/LikeIcon";
+import LikeList from "./components/peopleWhoLike/LikeList";
 
 export default function Timeline() {
     const [url, setUrl] = useState("");
     const [description, setDescription] = useState("");
     const [posts, setPosts] = useState([]);
     const token = localStorage.getItem('token');
+    const [numLikes, setNumLikes] = useState({})
     const [editing, setEditing] = useState(false);
     const descriptionRef = useRef(null);   
+    const [loaded, setLoaded] = useState(false)
 
     function Postar(event) {
         event.preventDefault();
         console.log("olá");
-
+    
         const config = {
             headers: {Authorization: `Bearer ${token}`}
         }
-
-
+    
         const requisicao = axios.post("http://localhost:5000/timelines", {
             url,
             description,
         },config);
+    
         requisicao.then((response) => {
             console.log(response.data);
+            setPosts([...posts, response.data]);
+            setUrl("");
+            setDescription("");
         });
+    
         requisicao.catch((err) => {
             console.log(err);
         })
-
     };
+    
 
     useEffect(() => {
         const promise = axios.get(`http://localhost:5000/timelines`);
         promise.then((response) => {
-            setPosts(response.data);
-            console.log(response.data);
+          setPosts(response.data);
+          console.log(response.data);
         });
         promise.catch((erro) => {
-            console.log(erro);
+          console.log(erro);
         })
-    },[]);
-
-
+      }, []); 
 
     return (
         <>
@@ -64,39 +69,47 @@ export default function Timeline() {
                         <Publish onClick={Postar}>Publish</Publish>
                     </div>
                 </PublishPost>
-                    {posts.map((post,index) => 
+                {posts.map((post,index) => 
                     <UserPost key={index} className="userPost">
-                        <ImageName className="imageName">
-                            <LeftInformations>
-                                <ImageUser src={post.image}/>
-                                <InfoUser className="infoUser">
-                                    <p>{post.name}</p>
-                                    <p>{post.description}</p>
-                                </InfoUser>
-                            </LeftInformations>
-                            <UserOptions>
-                                <EditIcon 
-                                    idPost={post.postid} 
-                                    posts={posts} 
-                                    setPosts={setPosts}
-                                    onClick={() => setEditing(true)}></EditIcon>
-                                <RecycleBin idPost={post.postid} posts={posts} setPosts={setPosts}></RecycleBin>
-                            </UserOptions>
-                        </ImageName>
-                        <LikeAndContentContainer>
+                    <ImageName className="imageName">
+                    <LeftInformations>
+                            <ImageUser src={post.image}/>
+                            <InfoUser className="infoUser">
+                                <p>{post.name}</p>
+                                <p>{post.description}</p>
+                            </InfoUser>
+                        </LeftInformations>
+                        <UserOptions>
+                            <EditIcon 
+                                idPost={post.postid} 
+                                posts={posts} 
+                                setPosts={setPosts}></EditIcon>
+                            <RecycleBin idPost={post.postid} posts={posts} setPosts={setPosts}></RecycleBin>
+                        </UserOptions>
+                    </ImageName>
+                    <LikeAndContentContainer>
+                    <LikeContainer>
                             <LikeIcon
                                 idPost = {post.postid}
-                                likes = {post.likes}>
+                                likes = {post.likes}
+                                updateLikes = {(newLikes) =>{
+                                    setNumLikes({...numLikes,[post.postid]: newLikes})
+                                }}>
                             </LikeIcon>
-                            <ImageUrl>
-                                <Urls>
-                                    <p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><p>{post.url}</p> 
-                                </Urls>
-                                <img src={post.imageUrl} />
-                            </ImageUrl>
-                        </LikeAndContentContainer>
-                        
-                    </UserPost>
+                            <LikeList
+                                idPost = {post.postid}
+                                likes = {post.likes}
+                                numLikes = {numLikes[post.postid]}>
+                            </LikeList>
+                        </LikeContainer>
+                        <ImageUrl>
+                            <Urls>
+                                <p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><p>{post.url}</p> 
+                            </Urls>
+                            <img src={post.imageUrl} />
+                        </ImageUrl>
+                    </LikeAndContentContainer>
+                </UserPost>
                     )}
             </MainPageContainer>
         </>
@@ -187,6 +200,12 @@ const ImageName = styled.div`
 const LikeAndContentContainer = styled.section`
     display: flex;
     justify-content: center;
+`
+
+const LikeContainer = styled.section`
+    width: auto;
+    display: flex;
+    flex-direction: column;
 `
 
 const LeftInformations = styled.section`

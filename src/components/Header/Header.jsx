@@ -50,9 +50,10 @@ export default function Header(){
                     minLength={3}
                     debounceTimeout={300}
                     onChange={handleChange}
+                    data-test="search"
                     ></SearchBar>
                 {showResults && (
-                <ResultsContainer>
+                <ResultsContainer data-test="user-search">
                     {users.length === 0 ? (
                     <NoResults>No results found.</NoResults>
                     ) : (
