@@ -29,6 +29,7 @@ export default function RegistrationPage() {
       navigate("/");
     });
     promise.catch((err) => {
+
       alert(err.response.data);
       setIsLoading(false);
       setEmail("");

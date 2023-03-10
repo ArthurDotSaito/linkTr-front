@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import axios from "axios";
+import Trendings from "./components/trendings/trendings"
+import { ReactTagify } from "react-tagify";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import Header from "./components/Header/Header";
 import RecycleBin from "./components/deleteIcon/DeleteIcon";
@@ -11,6 +14,7 @@ export default function Timeline() {
     const [url, setUrl] = useState("");
     const [description, setDescription] = useState("");
     const [posts, setPosts] = useState([]);
+    const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const [numLikes, setNumLikes] = useState({})
     const [editing, setEditing] = useState(false);
@@ -54,6 +58,7 @@ export default function Timeline() {
         })
       }, []); 
 
+
     return (
         <>
             <Header>
@@ -76,7 +81,12 @@ export default function Timeline() {
                             <ImageUser src={post.image}/>
                             <InfoUser className="infoUser">
                                 <p>{post.name}</p>
+                                <ReactTagify
+                                tagStyle={tagStyle}
+                                tagClicked={tag => navigate("/hashtag/" + tag)}
+                            >
                                 <p>{post.description}</p>
+                                </ReactTagify>
                             </InfoUser>
                         </LeftInformations>
                         <UserOptions>
@@ -122,12 +132,12 @@ const MainPageContainer = styled.main`
     display: flex;
     flex-direction: column;
     align-items: center;
-
 `
 
 const Urls = styled.div`
     display:flex;
     flex-direction:column;
+    padding-top:24px;
     p:nth-child(1){
         font-family: 'Lato';
         font-style: normal;
@@ -136,6 +146,7 @@ const Urls = styled.div`
         line-height: 19px;
         color: #CECECE;
         padding: 10px;
+
     }
     p:nth-child(2){
         padding-top:5px;
@@ -169,6 +180,11 @@ const ImageUrl = styled.div`
     box-sizing: border-box;
     width: 503px;
     height: 155px;
+    left: 502px;
+    top: 596px;
+    margin-left:87px;
+    margin-top:10px;
+
     margin-top:10px; 
     border: 1px solid #4D4D4D;
     border-radius: 11px;
@@ -177,12 +193,22 @@ const ImageUrl = styled.div`
 const UserPost = styled.div`
     display:flex;
     flex-direction:column;
+    margin-left:415px;
+width: 611px;
+height: 276px;
+left: 415px;
+top: 495px;
+
+background: #171717;
+border-radius: 16px;
+margin-top:20px;
     width: 611px;
     height: 276px;
     background: #171717;
     border-radius: 16px;
     margin-top:20px;
     word-wrap: break-word;
+
 `
 const ImageUser = styled.img`
     width: 50px;
@@ -194,7 +220,6 @@ const ImageName = styled.div`
     flex-direction:row;
     padding-left:18px;
     padding-top:17px;
-    justify-content: space-between;
 `
 
 const LikeAndContentContainer = styled.section`
@@ -244,12 +269,35 @@ const InfoUser = styled.div`
     }
 `
 
+const Title = styled.div`
+    position: absolute;
+    width: 108px;
+    height: 54px;
+    left: 28px;
+    top: 10px;
+    margin-left:415px;
+
+    
+    font-family: 'Passion One';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 49px;
+    line-height: 54px;
+    /* identical to box height */
+    
+    letter-spacing: 0.05em;
+    
+    color: #FFFFFF;
+ `
+
 const PublishPost = styled.div`
     position: relative;
     display:flex;
     flex-direction:row;
     align-items:center;
     justify-content:center;
+    margin-left:415px;
+
     width: 611px;
     height: 209px;
     margin-top:43px;
@@ -334,7 +382,8 @@ padding-top:8px;
 }
 
  `
- const Publish = styled.button`
+const Publish = styled.button`
+
     margin-top:5px;
     width: 112px;
 height: 31px;
@@ -349,10 +398,9 @@ font-weight: 700;
 font-size: 14px;
 line-height: 17px;
 /* identical to box height */
-
-
 color: #FFFFFF;
-margin-left:390px `
+margin-left:390px; `
+
 const Second = styled.p`
     width: 145px;
     height: 64px;
@@ -365,60 +413,10 @@ const Second = styled.p`
     line-height: 64px;
     color: #FFFFFF;
     margin-top:78px;
-
+    margin-left:415px;
  `
-//  const GetPosts = styled.div`
-//     display:flex;
-//     margin-top:29px;
-//     flex-direction:column;
-//     margin-left:415px;
-
-//     div{
-//         margin-top:16px;
-//         display:flex;
-//         flex-direction:colum;
-//         width: 611px;
-//         height: 276px;
-//         border-radius: 16px;
-//         padding-left:18px;
-//         padding-top:18px;
-//     }
-//     div img{
-//         width: 50px;
-//         height: 50px;
-//         border-radius: 26.5px;
-
-
-//     }
-//     div section{
-//         flex-direction:column;
-//         margin-left:18px;
-//     }
-//  `
-//  const PostName = styled.p`
-//     font-weight: 400;
-//     font-size: 19px;
-//     line-height: 23px;
-//     color: #FFFFFF;
-//  `
-//  const PostDescription = styled.p`
-//     font-style: normal;
-//     font-weight: 400;
-//     font-size: 17px;
-//     line-height: 20px;
-//     color: #B7B7B7;
-// `
-// const ImageUrl = styled.div`
-// width: 153.44px;
-// height: 155px;
-// left: 851.56px;
-// top: 596px;
-// `
-
-// const ImagePage = styled.img`
-//     width: 153.44px;
-//     height: 155px;
-// `
-// const AllUrl = styled.div`
-    
-// `
+    const tagStyle = {
+        color: 'white',
+        fontWeight: 500,
+        cursor: 'pointer'
+    }
