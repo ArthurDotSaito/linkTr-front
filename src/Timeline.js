@@ -58,6 +58,72 @@ export default function Timeline() {
         })
       }, []); 
 
+<<<<<<<<< Temporary merge branch 1
+
+    return (
+        <>
+            <Header>
+            </Header>
+            <MainPageContainer>
+                <Second>timeline</Second>
+                <PublishPost>
+                    <img src="" />
+                    <div>
+                        <p>What are you going to share today?</p>
+                        <InputUrl type="text" placeholder="http:// ..." value={url} onChange={(e) => setUrl(e.target.value)}></InputUrl>
+                        <InputDescription type="text" placeholder="Awesome article about #javascript" value={description} onChange={(e) => setDescription(e.target.value)}></InputDescription>
+                        <Publish onClick={Postar}>Publish</Publish>
+                    </div>
+                </PublishPost>
+                {posts.map((post,index) => 
+                    <UserPost key={index} className="userPost">
+                    <ImageName className="imageName">
+                    <LeftInformations>
+                            <ImageUser src={post.image}/>
+                            <InfoUser className="infoUser">
+                                <p>{post.name}</p>
+                                <ReactTagify
+                                tagStyle={tagStyle}
+                                tagClicked={tag => navigate("/hashtag/" + tag)}
+                            >
+                                <p>{post.description}</p>
+                                </ReactTagify>
+                            </InfoUser>
+                        </LeftInformations>
+                        <UserOptions>
+                            <EditIcon 
+                                idPost={post.postid} 
+                                posts={posts} 
+                                setPosts={setPosts}></EditIcon>
+                            <RecycleBin idPost={post.postid} posts={posts} setPosts={setPosts}></RecycleBin>
+                        </UserOptions>
+                    </ImageName>
+                    <LikeAndContentContainer>
+                    <LikeContainer>
+                            <LikeIcon
+                                idPost = {post.postid}
+                                likes = {post.likes}
+                                updateLikes = {(newLikes) =>{
+                                    setNumLikes({...numLikes,[post.postid]: newLikes})
+                                }}>
+                            </LikeIcon>
+                            <LikeList
+                                idPost = {post.postid}
+                                likes = {post.likes}
+                                numLikes = {numLikes[post.postid]}>
+                            </LikeList>
+                        </LikeContainer>
+                        <ImageUrl>
+                            <Urls>
+                                <p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><p>{post.url}</p> 
+                            </Urls>
+                            <img src={post.imageUrl} />
+                        </ImageUrl>
+                    </LikeAndContentContainer>
+                </UserPost>
+                    )}
+            </MainPageContainer>
+=========
             <Title>Linkr</Title>
             <Second>timeline</Second>
             <PublishPost>
@@ -145,6 +211,8 @@ export default function Timeline() {
             </MainPageContainer>
         </>
     )
+      }, []); 
+  )
 }
 const Urls = styled.div`
     display:flex;
