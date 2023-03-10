@@ -30,6 +30,8 @@ export default function RegistrationPage() {
       alert(err.response.data);
     });
   }
+
+  console.log(email);
   return (
     <MainContainer>
       <LeftContainer>
@@ -42,18 +44,22 @@ export default function RegistrationPage() {
       <RightContainer>
         <FormContainer onSubmit={login}>
           <input
+            data-test="email"
             placeholder="e-mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></input>
           <input
+            data-test="password"
             placeholder="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></input>
-          <SignUpButton type="submit">Log In</SignUpButton>
-          <Link to={"/signup"}>
+          <SignUpButton data-test="login-btn" type="submit">
+            Log In
+          </SignUpButton>
+          <Link data-test="sign-up-link" to={"/signup"}>
             <p>First time? Create an account!</p>
           </Link>
         </FormContainer>

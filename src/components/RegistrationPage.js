@@ -48,33 +48,41 @@ export default function RegistrationPage() {
       <RightContainer>
         <FormContainer onSubmit={signUpUser}>
           <input
+            data-test="email"
             placeholder="e-mail"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></input>
           <input
+            data-test="password"
             placeholder="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></input>
           <input
+            data-test="username"
             placeholder="username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           ></input>
           <input
+            data-test="picture-url"
             placeholder="picture url"
             type="url"
             value={pictureUrl}
             onChange={(e) => setPictureUrl(e.target.value)}
           ></input>
-          <SignUpButton disabled={isLoading} type="submit">
+          <SignUpButton
+            data-test="sign-up-btn"
+            disabled={isLoading}
+            type="submit"
+          >
             Sign Up
           </SignUpButton>
-          <Link to={"/"}>
+          <Link data-test="login-link" to={"/"}>
             <p>Switch back to log in</p>
           </Link>
         </FormContainer>
