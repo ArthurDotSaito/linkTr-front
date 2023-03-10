@@ -82,6 +82,7 @@ export default function Header() {
           minLength={3}
           debounceTimeout={300}
           onChange={handleChange}
+          data-test="search"
         ></SearchBar>
         {showResults && (
           <ResultsContainer onClick={() => setTurn(false)}>
@@ -90,7 +91,7 @@ export default function Header() {
             ) : (
               users.map((user) => (
                 <Result key={user.username}>
-                  <Avatar src={user.icon} />
+                  <Avatar data-test="avatar" src={user.icon} />
                   <Username>{user.username}</Username>
                 </Result>
               ))
@@ -102,8 +103,10 @@ export default function Header() {
         {turn ? (
           <>
             <Logout turn={turn} onClick={handleTurn} src={logoutVectorUp} />
-            <LogoutMenu>
-              <h1 onClick={handleLogout}>Logout</h1>
+            <LogoutMenu data-test="menu">
+              <h1 data-test="logout" onClick={handleLogout}>
+                Logout
+              </h1>
             </LogoutMenu>
           </>
         ) : (
