@@ -182,7 +182,6 @@ const ImageUrl = styled.div`
     height: 155px;
     left: 502px;
     top: 596px;
-    margin-left:87px;
     margin-top:10px;
 
     margin-top:10px; 
@@ -193,7 +192,6 @@ const ImageUrl = styled.div`
 const UserPost = styled.div`
     display:flex;
     flex-direction:column;
-    margin-left:415px;
 width: 611px;
 height: 276px;
 left: 415px;
@@ -296,7 +294,6 @@ const PublishPost = styled.div`
     flex-direction:row;
     align-items:center;
     justify-content:center;
-    margin-left:415px;
 
     width: 611px;
     height: 209px;
@@ -413,7 +410,6 @@ const Second = styled.p`
     line-height: 64px;
     color: #FFFFFF;
     margin-top:78px;
-    margin-left:415px;
  `
     const tagStyle = {
         color: 'white',
