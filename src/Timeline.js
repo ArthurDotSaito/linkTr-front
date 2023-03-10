@@ -89,66 +89,9 @@ export default function Timeline() {
                 </UserPost>
                 )}
             <Trendings/>
-
-    return (
-        <>
-            <Header>
-            </Header>
-            <MainPageContainer>
-                <Second>timeline</Second>
-                <PublishPost>
-                    <img src="" />
-                    <div>
-                        <p>What are you going to share today?</p>
-                        <InputUrl type="text" placeholder="http:// ..." value={url} onChange={(e) => setUrl(e.target.value)}></InputUrl>
-                        <InputDescription type="text" placeholder="Awesome article about #javascript" value={description} onChange={(e) => setDescription(e.target.value)}></InputDescription>
-                        <Publish onClick={Postar}>Publish</Publish>
-                    </div>
-                </PublishPost>
-                    {posts.map((post,index) => 
-                    <UserPost key={index} className="userPost">
-                        <ImageName className="imageName">
-                            <LeftInformations>
-                                <ImageUser src={post.image}/>
-                                <InfoUser className="infoUser">
-                                    <p>{post.name}</p>
-                                    <p>{post.description}</p>
-                                </InfoUser>
-                            </LeftInformations>
-                            <UserOptions>
-                                <EditIcon 
-                                    idPost={post.postid} 
-                                    posts={posts} 
-                                    setPosts={setPosts}
-                                    onClick={() => setEditing(true)}></EditIcon>
-                                <RecycleBin idPost={post.postid} posts={posts} setPosts={setPosts}></RecycleBin>
-                            </UserOptions>
-                        </ImageName>
-                        <LikeAndContentContainer>
-                            <LikeIcon
-                                idPost = {post.postid}
-                                likes = {post.likes}>
-                            </LikeIcon>
-                            <ImageUrl>
-                                <Urls>
-                                    <p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><p>{post.url}</p> 
-                                </Urls>
-                                <img src={post.imageUrl} />
-                            </ImageUrl>
-                        </LikeAndContentContainer>
-                        
-                    </UserPost>
-                    )}
-            </MainPageContainer>
         </>
-
-    );
+    )
 }
-const Urls = styled.div`
-    display:flex;
-    flex-direction:column;
-    padding-top:24px;
-
 const MainPageContainer = styled.main`
     width: 100%;
     display: flex;
@@ -242,11 +185,6 @@ const ImageName = styled.div`
     flex-direction:row;
     padding-left:18px;
     padding-top:17px;
-`
-
-const InfoUser = styled.div`
-
-    justify-content: space-between;
 `
 
 const LikeAndContentContainer = styled.section`
