@@ -4,17 +4,20 @@ import { useEffect, useState } from "react";
 import Trendings from "./components/trendings/trendings"
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
-
+import { useEffect, useState, useRef } from "react";
+import Header from "./components/Header/Header";
+import RecycleBin from "./components/deleteIcon/DeleteIcon";
+import EditIcon from "./components/editIcon/EditIcon";
+import LikeIcon from "./components/likeIcon/LikeIcon";
 
 export default function Timeline() {
     const [url, setUrl] = useState("");
     const [description, setDescription] = useState("");
     const [posts, setPosts] = useState([]);
-
-    let token = localStorage.getItem("token");
     const navigate = useNavigate();
-
-    
+    const token = localStorage.getItem('token');
+    const [editing, setEditing] = useState(false);
+    const descriptionRef = useRef(null);   
 
     function Postar(event) {
         event.preventDefault();
@@ -37,7 +40,6 @@ export default function Timeline() {
         })
 
     };
-
 
     useEffect(() => {
         const promise = axios.get(`http://localhost:5000/timelines`);
@@ -87,6 +89,57 @@ export default function Timeline() {
                 </UserPost>
                 )}
             <Trendings/>
+
+    return (
+        <>
+            <Header>
+            </Header>
+            <MainPageContainer>
+                <Second>timeline</Second>
+                <PublishPost>
+                    <img src="" />
+                    <div>
+                        <p>What are you going to share today?</p>
+                        <InputUrl type="text" placeholder="http:// ..." value={url} onChange={(e) => setUrl(e.target.value)}></InputUrl>
+                        <InputDescription type="text" placeholder="Awesome article about #javascript" value={description} onChange={(e) => setDescription(e.target.value)}></InputDescription>
+                        <Publish onClick={Postar}>Publish</Publish>
+                    </div>
+                </PublishPost>
+                    {posts.map((post,index) => 
+                    <UserPost key={index} className="userPost">
+                        <ImageName className="imageName">
+                            <LeftInformations>
+                                <ImageUser src={post.image}/>
+                                <InfoUser className="infoUser">
+                                    <p>{post.name}</p>
+                                    <p>{post.description}</p>
+                                </InfoUser>
+                            </LeftInformations>
+                            <UserOptions>
+                                <EditIcon 
+                                    idPost={post.postid} 
+                                    posts={posts} 
+                                    setPosts={setPosts}
+                                    onClick={() => setEditing(true)}></EditIcon>
+                                <RecycleBin idPost={post.postid} posts={posts} setPosts={setPosts}></RecycleBin>
+                            </UserOptions>
+                        </ImageName>
+                        <LikeAndContentContainer>
+                            <LikeIcon
+                                idPost = {post.postid}
+                                likes = {post.likes}>
+                            </LikeIcon>
+                            <ImageUrl>
+                                <Urls>
+                                    <p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><p>{post.url}</p> 
+                                </Urls>
+                                <img src={post.imageUrl} />
+                            </ImageUrl>
+                        </LikeAndContentContainer>
+                        
+                    </UserPost>
+                    )}
+            </MainPageContainer>
         </>
 
     );
@@ -95,6 +148,18 @@ const Urls = styled.div`
     display:flex;
     flex-direction:column;
     padding-top:24px;
+
+const MainPageContainer = styled.main`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+`
+
+const Urls = styled.div`
+    display:flex;
+    flex-direction:column;
     p:nth-child(1){
         font-family: 'Lato';
         font-style: normal;
@@ -102,6 +167,8 @@ const Urls = styled.div`
         font-size: 16px;
         line-height: 19px;
         color: #CECECE;
+        padding: 10px;
+
     }
     p:nth-child(2){
         padding-top:5px;
@@ -111,6 +178,7 @@ const Urls = styled.div`
         font-size: 11px;
         line-height: 13px;
         color: #9B9595;
+        padding: 10px;
     }
     p:nth-child(3){
         padding-top:13px;
@@ -120,6 +188,7 @@ const Urls = styled.div`
         font-size: 11px;
         line-height: 13px;
         color: #CECECE;
+        padding: 10px;
     }
 `
 
@@ -138,6 +207,7 @@ const ImageUrl = styled.div`
     margin-left:87px;
     margin-top:10px;
 
+    margin-top:10px; 
     border: 1px solid #4D4D4D;
     border-radius: 11px;
 `
@@ -154,6 +224,13 @@ top: 495px;
 background: #171717;
 border-radius: 16px;
 margin-top:20px;
+    width: 611px;
+    height: 276px;
+    background: #171717;
+    border-radius: 16px;
+    margin-top:20px;
+    word-wrap: break-word;
+
 `
 const ImageUser = styled.img`
     width: 50px;
@@ -168,6 +245,29 @@ const ImageName = styled.div`
 `
 
 const InfoUser = styled.div`
+
+    justify-content: space-between;
+`
+
+const LikeAndContentContainer = styled.section`
+    display: flex;
+    justify-content: center;
+`
+
+const LeftInformations = styled.section`
+    display:flex;
+    flex-direction:row;
+    width: auto;
+`
+
+const UserOptions = styled.section`
+    display:flex;
+    flex-direction:row;
+    width: auto;
+`
+
+const InfoUser = styled.div`
+    width: auto;
     display:flex;
     flex-direction:column;
     margin-left:18px;
@@ -218,6 +318,7 @@ const Title = styled.div`
     
     color: #FFFFFF;
  `
+
 const PublishPost = styled.div`
     position: relative;
     display:flex;
@@ -225,6 +326,7 @@ const PublishPost = styled.div`
     align-items:center;
     justify-content:center;
     margin-left:415px;
+
     width: 611px;
     height: 209px;
     margin-top:43px;
@@ -310,6 +412,7 @@ padding-top:8px;
 
  `
 const Publish = styled.button`
+
     margin-top:5px;
     width: 112px;
 height: 31px;
@@ -346,6 +449,7 @@ const Second = styled.p`
         fontWeight: 500,
         cursor: 'pointer'
     }
+
 //  const GetPosts = styled.div`
 //     display:flex;
 //     margin-top:29px;
@@ -401,4 +505,3 @@ const Second = styled.p`
 // const AllUrl = styled.div`
     
 // `
-

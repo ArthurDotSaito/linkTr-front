@@ -1,40 +1,33 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import UserContext from "../contexts/Context";
 import styled from "styled-components";
 
 export default function RegistrationPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [pictureUrl, setPictureUrl] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const { setUser, setToken } = useContext(UserContext);
 
   const navigate = useNavigate();
 
-  function signUpUser(e) {
+  function login(e) {
     e.preventDefault();
-    setIsLoading(true);
 
     const request = {
       email: email,
       password: password,
-      username: username,
-      pictureUrl: pictureUrl,
     };
 
-    const promise = axios.post("http://localhost:5000/signup", request);
-    promise.then(() => {
-      setIsLoading(false);
-      navigate("/");
+    const promise = axios.post("http://localhost:5000/signin", request);
+    promise.then((res) => {
+      localStorage.setItem("token", res.data.token);
+      setToken(res.data.token);
+      setUser(res.data);
+      navigate("/timelines");
     });
     promise.catch((err) => {
-
       alert(err.response.data);
-      setIsLoading(false);
-      setEmail("");
-      setPassword("");
-      setUsername("");
     });
   }
   return (
@@ -47,10 +40,9 @@ export default function RegistrationPage() {
         </SubTitle>
       </LeftContainer>
       <RightContainer>
-        <FormContainer onSubmit={signUpUser}>
+        <FormContainer onSubmit={login}>
           <input
             placeholder="e-mail"
-            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></input>
@@ -60,23 +52,9 @@ export default function RegistrationPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></input>
-          <input
-            placeholder="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          ></input>
-          <input
-            placeholder="picture url"
-            type="url"
-            value={pictureUrl}
-            onChange={(e) => setPictureUrl(e.target.value)}
-          ></input>
-          <SignUpButton disabled={isLoading} type="submit">
-            Sign Up
-          </SignUpButton>
-          <Link to={"/"}>
-            <p>Switch back to log in</p>
+          <SignUpButton type="submit">Log In</SignUpButton>
+          <Link to={"/signup"}>
+            <p>First time? Create an account!</p>
           </Link>
         </FormContainer>
       </RightContainer>
@@ -200,7 +178,6 @@ const SignUpButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: ${(props) => (!props.disabled ? "1" : "0.7")};
   @media (max-width: 1470px) {
     width: 330px;
     height: 55px;
