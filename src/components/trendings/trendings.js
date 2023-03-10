@@ -1,8 +1,17 @@
+import axios from "axios"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { TreadMenu } from "./style"
 
 export default function Trendings(){
-    let treads = []
+    const [treads, setTreads] = useState([])
+    
+    useEffect(() => {
+    axios.get(process.env.API_URL + "/treadings")
+    .then(res => setTreads(...treads, res.data))
+    .catch(err => console.log(err.response.data))
+    }
+    , [])
 
     return(
         <TreadMenu>
