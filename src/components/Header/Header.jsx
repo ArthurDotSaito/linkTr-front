@@ -82,6 +82,7 @@ export default function Header() {
           minLength={3}
           debounceTimeout={300}
           onChange={handleChange}
+          data-test="search"
         ></SearchBar>
         {showResults && (
           <ResultsContainer onClick={() => setTurn(false)}>

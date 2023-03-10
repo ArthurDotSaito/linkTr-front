@@ -30,6 +30,8 @@ export default function RegistrationPage() {
       alert(err.response.data);
     });
   }
+
+  console.log(email);
   return (
     <MainContainer>
       <LeftContainer>

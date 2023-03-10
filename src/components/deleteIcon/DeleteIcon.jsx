@@ -16,7 +16,6 @@ export default function RecycleBin(props){
         promise.then((response) => {
             props.setPosts(response.data);
             console.log(response.data); 
-            props.setPosts(props.posts.filter(post => post.id !== postId));
         });
         promise.catch((erro) => {
             console.log(erro);
@@ -58,7 +57,7 @@ export default function RecycleBin(props){
 
     return(
         <DeleteIconContainer onClick={openModal}>
-            <DeleteIcon src={recycleBin}></DeleteIcon>
+            <DeleteIcon src={recycleBin} data-test="delete-btn"></DeleteIcon>
             <ModalBigContainer id="modal-root">
                 <ModalContainer 
                     isOpen={modalIsOpen}
@@ -70,10 +69,11 @@ export default function RecycleBin(props){
                         <ModalButtons>
                             <YesModalButton 
                                 onClick={() => handleDeleteConfirm(postId)}
-                                disabled={isLoading}>
+                                disabled={isLoading}
+                                data-test="confirm">
                                 <h3>{isLoading ? "Excluindo..." : "Yes, delete it"}</h3>
                             </YesModalButton>
-                            <NopeModalButton onClick={handleNopeModalButtonClick}>
+                            <NopeModalButton onClick={handleNopeModalButtonClick} data-test="cancel">
                                 <h3>No, go back</h3>
                             </NopeModalButton>
                         </ModalButtons>
