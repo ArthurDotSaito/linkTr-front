@@ -1,5 +1,9 @@
 import styled from "styled-components";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import Trendings from "./components/trendings/trendings"
+import { ReactTagify } from "react-tagify";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import Header from "./components/Header/Header";
 import RecycleBin from "./components/deleteIcon/DeleteIcon";
@@ -10,6 +14,7 @@ export default function Timeline() {
     const [url, setUrl] = useState("");
     const [description, setDescription] = useState("");
     const [posts, setPosts] = useState([]);
+    const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const [editing, setEditing] = useState(false);
     const descriptionRef = useRef(null);   
@@ -46,8 +51,44 @@ export default function Timeline() {
             console.log(erro);
         })
     },[]);
+    return (
+        <>
+            <Header/>
 
-
+            <Title>Linkr</Title>
+            <Second>timeline</Second>
+            <PublishPost>
+                <img src="" />
+                <div>
+                    <p>What are you going to share today?</p>
+                    <InputUrl type="text" placeholder="http:// ..." value={url} onChange={(e) => setUrl(e.target.value)}></InputUrl>
+                    <InputDescription type="text" placeholder="Awesome article about #javascript" value={description} onChange={(e) => setDescription(e.target.value)}></InputDescription>
+                    <Publish onClick={Postar}>Publish</Publish>
+                </div>
+            </PublishPost>
+                {posts.map((post,index) => 
+                <UserPost key={index}>
+                    <ImageName>
+                        <ImageUser src={post.image}/>
+                        <InfoUser>
+                            <p>{post.name}</p>
+                            <ReactTagify
+                                tagStyle={tagStyle}
+                                tagClicked={tag => navigate("/hashtag/" + tag)}
+                            >
+                            <p>{post.description}</p>
+                            </ReactTagify>
+                        </InfoUser>
+                    </ImageName>
+                    <ImageUrl>
+                        <Urls>
+                            <p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><p>{post.url}</p> 
+                        </Urls>
+                        <img src={post.imageUrl} />
+                    </ImageUrl>
+                </UserPost>
+                )}
+            <Trendings/>
 
     return (
         <>
@@ -103,6 +144,10 @@ export default function Timeline() {
 
     );
 }
+const Urls = styled.div`
+    display:flex;
+    flex-direction:column;
+    padding-top:24px;
 
 const MainPageContainer = styled.main`
     width: 100%;
@@ -123,6 +168,7 @@ const Urls = styled.div`
         line-height: 19px;
         color: #CECECE;
         padding: 10px;
+
     }
     p:nth-child(2){
         padding-top:5px;
@@ -156,6 +202,11 @@ const ImageUrl = styled.div`
     box-sizing: border-box;
     width: 503px;
     height: 155px;
+    left: 502px;
+    top: 596px;
+    margin-left:87px;
+    margin-top:10px;
+
     margin-top:10px; 
     border: 1px solid #4D4D4D;
     border-radius: 11px;
@@ -164,12 +215,22 @@ const ImageUrl = styled.div`
 const UserPost = styled.div`
     display:flex;
     flex-direction:column;
+    margin-left:415px;
+width: 611px;
+height: 276px;
+left: 415px;
+top: 495px;
+
+background: #171717;
+border-radius: 16px;
+margin-top:20px;
     width: 611px;
     height: 276px;
     background: #171717;
     border-radius: 16px;
     margin-top:20px;
     word-wrap: break-word;
+
 `
 const ImageUser = styled.img`
     width: 50px;
@@ -181,6 +242,10 @@ const ImageName = styled.div`
     flex-direction:row;
     padding-left:18px;
     padding-top:17px;
+`
+
+const InfoUser = styled.div`
+
     justify-content: space-between;
 `
 
@@ -225,12 +290,43 @@ const InfoUser = styled.div`
     }
 `
 
+const Header = styled.div`
+    position: absolute;
+    width: 1440px;
+    height: 72px;
+    left: 0px;
+    top: 0px;
+    background: #151515;
+ `;
+const Title = styled.div`
+    position: absolute;
+    width: 108px;
+    height: 54px;
+    left: 28px;
+    top: 10px;
+    margin-left:415px;
+
+    
+    font-family: 'Passion One';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 49px;
+    line-height: 54px;
+    /* identical to box height */
+    
+    letter-spacing: 0.05em;
+    
+    color: #FFFFFF;
+ `
+
 const PublishPost = styled.div`
     position: relative;
     display:flex;
     flex-direction:row;
     align-items:center;
     justify-content:center;
+    margin-left:415px;
+
     width: 611px;
     height: 209px;
     margin-top:43px;
@@ -315,7 +411,8 @@ padding-top:8px;
 }
 
  `
- const Publish = styled.button`
+const Publish = styled.button`
+
     margin-top:5px;
     width: 112px;
 height: 31px;
@@ -330,10 +427,9 @@ font-weight: 700;
 font-size: 14px;
 line-height: 17px;
 /* identical to box height */
-
-
 color: #FFFFFF;
-margin-left:390px `
+margin-left:390px; `
+
 const Second = styled.p`
     width: 145px;
     height: 64px;
@@ -346,8 +442,14 @@ const Second = styled.p`
     line-height: 64px;
     color: #FFFFFF;
     margin-top:78px;
-
+    margin-left:415px;
  `
+    const tagStyle = {
+        color: 'white',
+        fontWeight: 500,
+        cursor: 'pointer'
+    }
+
 //  const GetPosts = styled.div`
 //     display:flex;
 //     margin-top:29px;
