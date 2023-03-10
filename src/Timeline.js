@@ -7,31 +7,37 @@ export default function Timeline() {
     const [url, setUrl] = useState("");
     const [description, setDescription] = useState("");
     const [posts, setPosts] = useState([]);
+    
 
     let token = localStorage.getItem("token");
 
+    const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+    console.log(headers)
 
     function Postar(event) {
         event.preventDefault();
         console.log("olá");
 
-        const config = {
-            headers: {Authorization: `Bearer ${token}`}
-        }
+        
 
 
         const requisicao = axios.post("http://localhost:5000/timelines", {
             url,
             description,
-        },config);
+        },headers);
+           
         requisicao.then((response) => {
             console.log(response.data);
         });
         requisicao.catch((err) => {
             console.log(err);
         })
+    }
 
-    };
+   
 
 
     useEffect(() => {
@@ -94,7 +100,7 @@ export default function Timeline() {
         </>
 
     );
-}
+};
 const Urls = styled.div`
     display:flex;
     flex-direction:column;
