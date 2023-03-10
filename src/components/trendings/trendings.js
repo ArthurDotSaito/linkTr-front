@@ -14,7 +14,7 @@ export default function Trendings(){
     , [])
 
     return(
-        <TreadMenu>
+        <TreadMenu data-test="trending">
             <div className="tittle">
                 trending
             </div>
@@ -31,6 +31,6 @@ export default function Trendings(){
 function Treads(props){
     const navigate = useNavigate()
     return(
-        <h2 onClick={navigate("/hashtag/" + props.tread)}># {props.tread}</h2>
+        <h2 onClick={navigate("/hashtag/" + props.tread)} data-test="hashtag"># {props.tread}</h2>
     )
 }
