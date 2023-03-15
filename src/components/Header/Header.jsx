@@ -104,7 +104,7 @@ export default function Header() {
             </ProfileSettings>
         </HeaderPageContainer>
     )
-} 
+
   const bla = users.map((user) => {
     console.log(user.username);
   });
@@ -152,6 +152,7 @@ export default function Header() {
       </ProfileSettings>
     </HeaderPageContainer>
   );
+      }
 
 
 const SearchBar = styled(DebounceInput)`

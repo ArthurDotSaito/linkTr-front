@@ -80,7 +80,7 @@ export default function Timeline() {
 
    
 
-    };
+    
     
 
     useEffect(() => {
@@ -165,8 +165,13 @@ export default function Timeline() {
                 </div>
             </PublishPost><Trendings /></>
 
-        
+                            
     );
+}
+                            
+                            
+
+                                                        
                             
 
   
