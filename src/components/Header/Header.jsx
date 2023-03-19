@@ -10,15 +10,16 @@ import logoutVectorUp from "../../assets/logoutVectorUp.svg";
 import DebounceInput from "react-debounce-input";
 import styled from "styled-components";
 import axios from "axios";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import UserContext from "../../contexts/Context";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Header() {
   const [users, setUsers] = React.useState([]);
   const [showResults, setShowResults] = React.useState(false);
   const [turn, setTurn] = React.useState(false);
   const { setToken, setUser, token } = useContext(UserContext);
+  const [posts, setPosts] = useState([]);
 
   const navigate = useNavigate();
   React.useEffect(() => {
@@ -29,10 +30,9 @@ export default function Header() {
   });
   React.useEffect(() => {
     setShowResults(users.length > 0);
-    console.log(showResults);
   }, [users, showResults]);
 
-    
+   
 
    
       
@@ -41,7 +41,6 @@ export default function Header() {
     axios
       .get(`http://localhost:5000/search?q=${query}`)
       .then((response) => {
-        console.log(response.data);
         setUsers(response.data);
         setShowResults(true);
       })
@@ -89,10 +88,12 @@ export default function Header() {
                     <NoResults>No results found.</NoResults>
                     ) : (
                     users.map(user => (
-                        <Result onClick={() => console.log("olá")}key={user.username}>
-                        <Avatar src={user.icon} />
-                        <Username>{user.username}</Username>
-                        </Result>
+                        <Link to={`/timelines/${user.id}`}>
+                            <Result key={user.id} onClick={() => console.log(user.id)}>
+                              <Avatar src={user.icon} />
+                              <Username>{user.username}</Username>
+                            </Result>
+                          </Link>
                     ))
                     )}
                 </ResultsContainer>

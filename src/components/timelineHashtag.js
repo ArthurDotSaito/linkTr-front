@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Trendings from "./components/trendings/trendings"
+import Trendings from "./trendings/trendings"
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 
 
 export default function TimelineHashtag() {
@@ -14,7 +16,7 @@ export default function TimelineHashtag() {
     let token = localStorage.getItem("token");
     const navigate = useNavigate();
 
-    
+   
 
     function Postar(event) {
         event.preventDefault();
@@ -69,7 +71,7 @@ export default function TimelineHashtag() {
                     <ImageName>
                         <ImageUser src={post.image}/>
                         <InfoUser>
-                            <p>{post.name}</p>
+                            <p onClick={()=> console.log(post.id)}>{post.name}</p>
                             <ReactTagify
                                 tagStyle={tagStyle}
                                 tagClicked={tag => navigate("/hashtag/" + tag)}

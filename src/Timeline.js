@@ -2,7 +2,7 @@ import styled from "styled-components";
 import axios from "axios";
 import Trendings from "./components/trendings/trendings"
 import { ReactTagify } from "react-tagify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, useParams, useLocation } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import Header from "./components/Header/Header";
 import RecycleBin from "./components/deleteIcon/DeleteIcon";
@@ -14,168 +14,146 @@ export default function Timeline() {
     const [url, setUrl] = useState("");
     const [description, setDescription] = useState("");
     const [posts, setPosts] = useState([]);
-
-    let token = localStorage.getItem("token");
-
-    const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-
-    console.log(headers)
-    const navigate = useNavigate();
+    const token = localStorage.getItem('token');
     const [numLikes, setNumLikes] = useState({})
     const [editing, setEditing] = useState(false);
-    const descriptionRef = useRef(null);   
-    const [loaded, setLoaded] = useState(false)
+    const descriptionRef = useRef(null);
+    const [loaded, setLoaded] = useState(false);
+    const id = useParams().id;
+    const navigate = useNavigate();
+
+    // const filterUser = (query) => {
+    //     axios.get(`http://localhost:5000/timelines?newuser=${query}`)
+    //     .theb((response) => {
+    //       console.log(response.data);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     })
+    //   }
+
+    //   const handleFilter = (event) => {
+    //     filterUser(event)
+    //   }
+
+
+
 
     function Postar(event) {
         event.preventDefault();
         console.log("olá");
 
-        
         const config = {
-            headers: {Authorization: `Bearer ${token}`}
+            headers: { Authorization: `Bearer ${token}` }
         }
-    
-        const requisicao = axios.post("http://localhost:5000/timelines", {
+
+        const requisicao = axios.post(`http://localhost:5000/timelines`, {
             url,
             description,
-        },config);
-           
-    
+        }, config);
+
         requisicao.then((response) => {
             console.log(response.data);
             setPosts([...posts, response.data]);
             setUrl("");
             setDescription("");
         });
-    
+
         requisicao.catch((err) => {
             console.log(err);
         })
-    }
+    };
+
+   
 
 
-
-        useEffect(() => {
+    const useTimeline = () => {
+    const location = useLocation();
+    useEffect(() => {
+        if (id === undefined) {
             const promise = axios.get(`http://localhost:5000/timelines`);
             promise.then((response) => {
                 setPosts(response.data);
                 console.log(response.data);
-                if(response.data.length === 0){
-                    alert("There are no posts yet");
-                }
-    
             });
             promise.catch((erro) => {
                 console.log(erro);
-                if(erro){
-                    alert("An error occured while trying to fetch the posts, please refresh the page");
-                }
             })
-          
-        },[]);
-   
-    
-
-   
-
-    
-    
-
-    useEffect(() => {
-        const promise = axios.get(`http://localhost:5000/timelines`);
+        }
+        const promise = axios.get(`http://localhost:5000/timelines/${id}`);
         promise.then((response) => {
-          setPosts(response.data);
-          console.log(response.data);
+            setPosts(response.data);
+            console.log(response.data);
         });
         promise.catch((erro) => {
-          console.log(erro);
+            console.log(erro);
         })
-      }, []); 
+    }, [location]);
+    }
+    
+    useTimeline();
+    console.log(posts);
+
+    
+
+
 
 
     return (
-
-            <><Header>
-        </Header><MainPageContainer>
+        <>
+            <Header>
+            </Header>
+            <MainPageContainer>
                 <Second>timeline</Second>
-                <PublishPost data-test="publish-box" >
+                <PublishPost>
                     <img src="" />
                     <div>
                         <p>What are you going to share today?</p>
-                        <InputUrl type="text" placeholder="http:// ..." value={url} onChange={(e) => setUrl(e.target.value)} data-test="link"></InputUrl>
-                        <InputDescription type="text" placeholder="Awesome article about #javascript" value={description} onChange={(e) => setDescription(e.target.value)} data-test="description"></InputDescription>
-                        <Publish onClick={Postar} data-test="publish-btn" >Publish</Publish>
+                        <InputUrl type="text" placeholder="http:// ..." value={url} onChange={(e) => setUrl(e.target.value)}></InputUrl>
+                        <InputDescription type="text" placeholder="Awesome article about #javascript" value={description} onChange={(e) => setDescription(e.target.value)}></InputDescription>
+                        <Publish onClick={Postar}>Publish</Publish>
                     </div>
                 </PublishPost>
-                {posts.map((post, index) => <UserPost key={index} className="userPost" data-test="post">
-                    <ImageName className="imageName">
-                        <LeftInformations>
-                            <ImageUser src={post.image} />
-                            <InfoUser className="infoUser">
-                                <p>{post.name}</p>
-                                <ReactTagify
-                                    tagStyle={tagStyle}
-                                    tagClicked={tag => navigate("/hashtag/" + tag)}
-                                >
+                {posts.map((post, index) =>
+                    <UserPost key={index} className="userPost">
+                        <ImageName className="imageName">
+                            <LeftInformations>
+                                <ImageUser src={post.image} />
+                                <InfoUser className="infoUser">
+                                        <Link to={`${post.id}`}>
+                                        <p>{post.name}</p>
+                                        </Link>
                                     <p>{post.description}</p>
-                                </ReactTagify>
-                            </InfoUser>
-                        </LeftInformations>
-                        <UserOptions>
-                            <EditIcon
-                                idPost={post.postid}
-                                posts={posts}
-                                setPosts={setPosts}></EditIcon>
-                            <RecycleBin idPost={post.postid} posts={posts} setPosts={setPosts}></RecycleBin>
-                        </UserOptions>
-                    </ImageName>
-                    <LikeAndContentContainer>
-                        <LikeContainer>
+                                </InfoUser>
+                            </LeftInformations>
+                            <UserOptions>
+                                <EditIcon
+                                    idPost={post.postid}
+                                    posts={posts}
+                                    setPosts={setPosts}
+                                    onClick={() => setEditing(true)}></EditIcon>
+                                <RecycleBin idPost={post.postid} posts={posts} setPosts={setPosts}></RecycleBin>
+                            </UserOptions>
+                        </ImageName>
+                        <LikeAndContentContainer>
                             <LikeIcon
                                 idPost={post.postid}
-                                likes={post.likes}
-                                updateLikes={(newLikes) => {
-                                    setNumLikes({ ...numLikes, [post.postid]: newLikes });
-                                } }>
+                                likes={post.likes}>
                             </LikeIcon>
-                            <LikeList
-                                idPost={post.postid}
-                                likes={post.likes}
-                                numLikes={numLikes[post.postid]}>
-                            </LikeList>
-                        </LikeContainer>
-                        <ImageUrl>
-                            <Urls>
-                                <p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><p>{post.url}</p>
-                            </Urls>
-                            <img src={post.imageUrl} />
-                        </ImageUrl>
-                    </LikeAndContentContainer>
-                </UserPost>
+                            <ImageUrl>
+                                <Urls>
+                                    <p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><p>{post.url}</p>
+                                </Urls>
+                                <img src={post.imageUrl} />
+                            </ImageUrl>
+                        </LikeAndContentContainer>
+
+                    </UserPost>
                 )}
-            </MainPageContainer><Title>Linkr</Title><Second>timeline</Second><PublishPost>
-                <img src="" />
-                <div>
-                    <p>What are you going to share today?</p>
-                    <InputUrl type="text" placeholder="http:// ..." value={url} onChange={(e) => setUrl(e.target.value)}></InputUrl>
-                    <InputDescription type="text" placeholder="Awesome article about #javascript" value={description} onChange={(e) => setDescription(e.target.value)}></InputDescription>
-                    <Publish onClick={Postar}>Publish</Publish>
-                </div>
-            </PublishPost><Trendings /></>
-
-                            
-    );
+            </MainPageContainer>
+        </>
+    )
 }
-                            
-                            
-
-                                                        
-                            
-
-  
-
 
 
 const MainPageContainer = styled.main`
@@ -184,7 +162,6 @@ const MainPageContainer = styled.main`
     flex-direction: column;
     align-items: center;
 `
-
 const Urls = styled.div`
     display:flex;
     flex-direction:column;
@@ -220,7 +197,6 @@ const Urls = styled.div`
         padding: 10px;
     }
 `
-
 const ImageUrl = styled.div`
     display:flex;
     flex-direction:row;
@@ -239,7 +215,6 @@ const ImageUrl = styled.div`
     border: 1px solid #4D4D4D;
     border-radius: 11px;
 `
-
 const UserPost = styled.div`
     display:flex;
     flex-direction:column;
@@ -270,30 +245,25 @@ const ImageName = styled.div`
     padding-left:18px;
     padding-top:17px;
 `
-
 const LikeAndContentContainer = styled.section`
     display: flex;
     justify-content: center;
 `
-
 const LikeContainer = styled.section`
     width: auto;
     display: flex;
     flex-direction: column;
 `
-
 const LeftInformations = styled.section`
     display:flex;
     flex-direction:row;
     width: auto;
 `
-
 const UserOptions = styled.section`
     display:flex;
     flex-direction:row;
     width: auto;
 `
-
 const InfoUser = styled.div`
     width: auto;
     display:flex;
@@ -317,7 +287,6 @@ const InfoUser = styled.div`
         color: #B7B7B7;
     }
 `
-
 const Title = styled.div`
     position: absolute;
     width: 108px;
@@ -338,7 +307,6 @@ const Title = styled.div`
     
     color: #FFFFFF;
  `
-
 const PublishPost = styled.div`
     position: relative;
     display:flex;
@@ -382,7 +350,7 @@ const PublishPost = styled.div`
     }
 
  `;
- const InputUrl = styled.input`
+const InputUrl = styled.input`
     width: 503px;
     height: 30px;
     
@@ -405,7 +373,7 @@ color: #949494;
 
     }
  `;
- const InputDescription = styled.input`
+const InputDescription = styled.input`
     width: 502px;
     height: 66px;
     left: 501px;
@@ -448,7 +416,6 @@ line-height: 17px;
 /* identical to box height */
 color: #FFFFFF;
 margin-left:390px; `
-
 const Second = styled.p`
     width: 145px;
     height: 64px;
@@ -462,8 +429,8 @@ const Second = styled.p`
     color: #FFFFFF;
     margin-top:78px;
  `
-    const tagStyle = {
-        color: 'white',
-        fontWeight: 500,
-        cursor: 'pointer'
-    }
+const tagStyle = {
+    color: 'white',
+    fontWeight: 500,
+    cursor: 'pointer'
+}

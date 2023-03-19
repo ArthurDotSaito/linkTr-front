@@ -7,7 +7,7 @@ export default function Trendings(){
     const [treads, setTreads] = useState([])
     
     useEffect(() => {
-    axios.get(process.env.API_URL + "/treadings")
+    axios.get(`http://localhost:5000/treadings`)
     .then(res => setTreads(...treads, res.data))
     .catch(err => console.log(err.response.data))
     }
