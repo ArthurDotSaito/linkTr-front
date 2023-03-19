@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import Header from "./components/Header/Header";
+import RecycleBin from "./components/deleteIcon/DeleteIcon";
 
 export default function Timeline() {
     const [url, setUrl] = useState("");
@@ -74,41 +75,39 @@ export default function Timeline() {
         <>
             <Header>
             </Header>
-            <Title>Linkr</Title>
-            <Second>timeline</Second>
-            <PublishPost>
-                <img src="" />
-                <div>
-                    <p>What are you going to share today?</p>
-                    <InputUrl type="text" placeholder="http:// ..." value={url} onChange={(e) => setUrl(e.target.value)}></InputUrl>
-                    <InputDescription type="text" placeholder="Awesome article about #javascript" value={description} onChange={(e) => setDescription(e.target.value)}></InputDescription>
-                    <Publish onClick={Postar}>Publish</Publish>
-                </div>
-            </PublishPost>
-                {posts.map((post,index) => 
-                <UserPost key={index}>
-                    <ImageName>
-                        <ImageUser src={post.image}/>
-                        <InfoUser>
-                            <p>{post.name}</p>
-                            <p>{post.description}</p>
-                        </InfoUser>
-                    </ImageName>
-                    <ImageUrl>
-                        <Urls>
-                            <p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><p>{post.url}</p> 
-                        </Urls>
-                        <img src={post.imageUrl} />
-
-
-                    </ImageUrl>
-                     
-                </UserPost>
-                
-
-                
-                )}
-
+            <MainPageContainer>
+                <Second>timeline</Second>
+                <PublishPost>
+                    <img src="" />
+                    <div>
+                        <p>What are you going to share today?</p>
+                        <InputUrl type="text" placeholder="http:// ..." value={url} onChange={(e) => setUrl(e.target.value)}></InputUrl>
+                        <InputDescription type="text" placeholder="Awesome article about #javascript" value={description} onChange={(e) => setDescription(e.target.value)}></InputDescription>
+                        <Publish onClick={Postar}>Publish</Publish>
+                    </div>
+                </PublishPost>
+                    {posts.map((post,index) => 
+                    <UserPost key={index} className="userPost">
+                        <ImageName className="imageName">
+                            <LeftInformations>
+                                <ImageUser src={post.image}/>
+                                <InfoUser className="infoUser">
+                                    <p>{post.name}</p>
+                                    <p>{post.description}</p>
+                                </InfoUser>
+                            </LeftInformations>
+                            <RecycleBin></RecycleBin>
+                        </ImageName>
+                        <ImageUrl>
+                            <Urls>
+                                <p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><p>{post.url}</p> 
+                            </Urls>
+                            <img src={post.imageUrl} />
+                        </ImageUrl>
+                        
+                    </UserPost>
+                    )}
+            </MainPageContainer>
         </>
     )
 }
@@ -185,7 +184,10 @@ const ImageName = styled.div`
     flex-direction:row;
     padding-left:18px;
     padding-top:17px;
+    justify-content: space-between;
 `
+
+
 const LikeAndContentContainer = styled.section`
     display: flex;
     justify-content: center;
