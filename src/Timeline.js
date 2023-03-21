@@ -2,7 +2,7 @@ import styled from "styled-components";
 import axios from "axios";
 import Trendings from "./components/trendings/trendings"
 import { ReactTagify } from "react-tagify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import Header from "./components/Header/Header";
 import RecycleBin from "./components/deleteIcon/DeleteIcon";
@@ -19,50 +19,69 @@ export default function Timeline() {
     const [numLikes, setNumLikes] = useState({})
     const [editing, setEditing] = useState(false);
     const descriptionRef = useRef(null);   
-    const [loaded, setLoaded] = useState(false)
+    const [loaded, setLoaded] = useState(false);
+    const {id} = useParams();
 
     function Postar(event) {
         event.preventDefault();
         console.log("olá");
-    
+
         const config = {
-            headers: {Authorization: `Bearer ${token}`}
+            headers: { Authorization: `Bearer ${token}` }
         }
-    
+
         const requisicao = axios.post(`${process.env.REACT_APP_API_URL}/timelines`, {
             url,
             description,
-        },config);
-    
+        }, config);
+
         requisicao.then((response) => {
             console.log(response.data);
             setPosts([...posts, response.data]);
             setUrl("");
             setDescription("");
         });
-    
+
         requisicao.catch((err) => {
             console.log(err);
         })
     };
-    
 
+   
+
+
+    const useTimeline = () => {
+    const location = useLocation();
     useEffect(() => {
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timelines`);
+        if (id === undefined) {
+            const promise = axios.get(`http://localhost:5000/timelines`);
+            promise.then((response) => {
+                setPosts(response.data);
+                console.log(response.data);
+            });
+            promise.catch((erro) => {
+                console.log(erro);
+            })
+        }
+        const promise = axios.get(`http://localhost:5000/timelines/${id}`);
         promise.then((response) => {
-          setPosts(response.data);
-          console.log(response.data);
+            setPosts(response.data);
+            console.log(response.data);
         });
         promise.catch((erro) => {
-          console.log(erro);
+            console.log(erro);
         })
-      }, []); 
+    }, [location]);
+    }
+    
+    useTimeline();
+    console.log(posts);
 
-<<<<<<< HEAD
-=======
-<<<<<<<<< Temporary merge branch 1
+    
 
->>>>>>> b652fb702c602bed45bcc863be5d50382cd69b87
+
+
+
     return (
         <>
             <Header>
@@ -110,11 +129,11 @@ export default function Timeline() {
                                     setNumLikes({...numLikes,[post.postid]: newLikes})
                                 }}>
                             </LikeIcon>
-                            <LikeList
+                            {/* <LikeList
                                 idPost = {post.postid}
                                 likes = {post.likes}
                                 numLikes = {numLikes[post.postid]}>
-                            </LikeList>
+                            </LikeList> */}
                         </LikeContainer>
                         <ImageUrl>
                             <Urls>
@@ -126,101 +145,14 @@ export default function Timeline() {
                 </UserPost>
                     )}
             </MainPageContainer>
-=========
-            <Title>Linkr</Title>
-            <Second>timeline</Second>
-            <PublishPost>
-                <img src="" />
-                <div>
-                    <p>What are you going to share today?</p>
-                    <InputUrl type="text" placeholder="http:// ..." value={url} onChange={(e) => setUrl(e.target.value)}></InputUrl>
-                    <InputDescription type="text" placeholder="Awesome article about #javascript" value={description} onChange={(e) => setDescription(e.target.value)}></InputDescription>
-                    <Publish onClick={Postar}>Publish</Publish>
-                </div>
-            </PublishPost>
-                {posts.map((post,index) => 
-                <UserPost key={index}>
-                    <ImageName>
-                        <ImageUser src={post.image}/>
-                        <InfoUser>
-                            <p>{post.name}</p>
-                            <ReactTagify
-                                tagStyle={tagStyle}
-                                tagClicked={tag => navigate("/hashtag/" + tag)}
-                            >
-                            <p>{post.description}</p>
-                            </ReactTagify>
-                        </InfoUser>
-                    </ImageName>
-                    <ImageUrl>
-                        <Urls>
-                            <p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><p>{post.url}</p> 
-                        </Urls>
-                        <img src={post.imageUrl} />
-                    </ImageUrl>
-                </UserPost>
-                )}
-            <Trendings/>
-
-    return (
-        <>
-            <Header>
-            </Header>
-            <MainPageContainer>
-                <Second>timeline</Second>
-                <PublishPost>
-                    <img src="" />
-                    <div>
-                        <p>What are you going to share today?</p>
-                        <InputUrl type="text" placeholder="http:// ..." value={url} onChange={(e) => setUrl(e.target.value)}></InputUrl>
-                        <InputDescription type="text" placeholder="Awesome article about #javascript" value={description} onChange={(e) => setDescription(e.target.value)}></InputDescription>
-                        <Publish onClick={Postar}>Publish</Publish>
-                    </div>
-                </PublishPost>
-                    {posts.map((post,index) => 
-                    <UserPost key={index} className="userPost">
-                        <ImageName className="imageName">
-                            <LeftInformations>
-                                <ImageUser src={post.image}/>
-                                <InfoUser className="infoUser">
-                                    <p>{post.name}</p>
-                                    <p>{post.description}</p>
-                                </InfoUser>
-                            </LeftInformations>
-                            <UserOptions>
-                                <EditIcon 
-                                    idPost={post.postid} 
-                                    posts={posts} 
-                                    setPosts={setPosts}
-                                    onClick={() => setEditing(true)}></EditIcon>
-                                <RecycleBin idPost={post.postid} posts={posts} setPosts={setPosts}></RecycleBin>
-                            </UserOptions>
-                        </ImageName>
-                        <LikeAndContentContainer>
-                            <LikeIcon
-                                idPost = {post.postid}
-                                likes = {post.likes}>
-                            </LikeIcon>
-                            <ImageUrl>
-                                <Urls>
-                                    <p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><p>{post.url}</p> 
-                                </Urls>
-                                <img src={post.imageUrl} />
-                            </ImageUrl>
-                        </LikeAndContentContainer>
-                        
-                    </UserPost>
-                    )}
-            </MainPageContainer>
         </>
     )
-      }, []); 
-  )
 }
-const Urls = styled.div`
-    display:flex;
-    flex-direction:column;
-    padding-top:24px;
+const tagStyle = {
+    color: 'white',
+    fontWeight: 500,
+    cursor: 'pointer'
+}
 
 const MainPageContainer = styled.main`
     width: 100%;
@@ -229,10 +161,10 @@ const MainPageContainer = styled.main`
     align-items: center;
 `
 
+
 const Urls = styled.div`
     display:flex;
     flex-direction:column;
-    padding-top:24px;
     p:nth-child(1){
         font-family: 'Lato';
         font-style: normal;
@@ -240,8 +172,6 @@ const Urls = styled.div`
         font-size: 16px;
         line-height: 19px;
         color: #CECECE;
-        padding: 10px;
-
     }
     p:nth-child(2){
         padding-top:5px;
@@ -264,7 +194,6 @@ const Urls = styled.div`
         padding: 10px;
     }
 `
-
 const ImageUrl = styled.div`
     display:flex;
     flex-direction:row;
@@ -277,16 +206,16 @@ const ImageUrl = styled.div`
     height: 155px;
     left: 502px;
     top: 596px;
+    margin-left:87px;
     margin-top:10px;
 
-    margin-top:10px; 
     border: 1px solid #4D4D4D;
     border-radius: 11px;
 `
-
 const UserPost = styled.div`
     display:flex;
     flex-direction:column;
+    margin-left:415px;
 width: 611px;
 height: 276px;
 left: 415px;
@@ -295,13 +224,6 @@ top: 495px;
 background: #171717;
 border-radius: 16px;
 margin-top:20px;
-    width: 611px;
-    height: 276px;
-    background: #171717;
-    border-radius: 16px;
-    margin-top:20px;
-    word-wrap: break-word;
-
 `
 const ImageUser = styled.img`
     width: 50px;
@@ -313,31 +235,29 @@ const ImageName = styled.div`
     flex-direction:row;
     padding-left:18px;
     padding-top:17px;
+    justify-content: space-between;
 `
+
 
 const LikeAndContentContainer = styled.section`
     display: flex;
     justify-content: center;
 `
-
 const LikeContainer = styled.section`
     width: auto;
     display: flex;
     flex-direction: column;
 `
-
 const LeftInformations = styled.section`
     display:flex;
     flex-direction:row;
     width: auto;
 `
-
 const UserOptions = styled.section`
     display:flex;
     flex-direction:row;
     width: auto;
 `
-
 const InfoUser = styled.div`
     width: auto;
     display:flex;
@@ -362,6 +282,7 @@ const InfoUser = styled.div`
     }
 `
 
+
 const Title = styled.div`
     position: absolute;
     width: 108px;
@@ -382,14 +303,13 @@ const Title = styled.div`
     
     color: #FFFFFF;
  `
-
 const PublishPost = styled.div`
     position: relative;
     display:flex;
     flex-direction:row;
     align-items:center;
     justify-content:center;
-
+    margin-left:415px;
     width: 611px;
     height: 209px;
     margin-top:43px;
@@ -426,7 +346,7 @@ const PublishPost = styled.div`
     }
 
  `;
- const InputUrl = styled.input`
+const InputUrl = styled.input`
     width: 503px;
     height: 30px;
     
@@ -449,7 +369,7 @@ color: #949494;
 
     }
  `;
- const InputDescription = styled.input`
+const InputDescription = styled.input`
     width: 502px;
     height: 66px;
     left: 501px;
@@ -492,7 +412,6 @@ line-height: 17px;
 /* identical to box height */
 color: #FFFFFF;
 margin-left:390px; `
-
 const Second = styled.p`
     width: 145px;
     height: 64px;
@@ -505,9 +424,62 @@ const Second = styled.p`
     line-height: 64px;
     color: #FFFFFF;
     margin-top:78px;
+    margin-left:415px;
+
  `
-    const tagStyle = {
-        color: 'white',
-        fontWeight: 500,
-        cursor: 'pointer'
-    }
+//  const GetPosts = styled.div`
+//     display:flex;
+//     margin-top:29px;
+//     flex-direction:column;
+//     margin-left:415px;
+
+//     div{
+//         margin-top:16px;
+//         display:flex;
+//         flex-direction:colum;
+//         width: 611px;
+//         height: 276px;
+//         border-radius: 16px;
+//         padding-left:18px;
+//         padding-top:18px;
+//     }
+//     div img{
+//         width: 50px;
+//         height: 50px;
+//         border-radius: 26.5px;
+
+
+//     }
+//     div section{
+//         flex-direction:column;
+//         margin-left:18px;
+//     }
+//  `
+//  const PostName = styled.p`
+//     font-weight: 400;
+//     font-size: 19px;
+//     line-height: 23px;
+//     color: #FFFFFF;
+//  `
+//  const PostDescription = styled.p`
+//     font-style: normal;
+//     font-weight: 400;
+//     font-size: 17px;
+//     line-height: 20px;
+//     color: #B7B7B7;
+// `
+// const ImageUrl = styled.div`
+// width: 153.44px;
+// height: 155px;
+// left: 851.56px;
+// top: 596px;
+// `
+
+// const ImagePage = styled.img`
+//     width: 153.44px;
+//     height: 155px;
+// `
+// const AllUrl = styled.div`
+    
+// `
+

@@ -8,7 +8,6 @@ export const DeleteIconContainer = styled.main`
 export const DeleteIcon = styled.img`
        
 `
-
 export const ModalButtons = styled.section`
     display: flex;
     justify-content:  space-around;
@@ -42,4 +41,6 @@ export const NopeModalButton = styled.button`
         color:#1877F2;
     }
 
+    
+    
 `
