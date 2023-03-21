@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import UserContext from "../contexts/Context";
+import UserContext from "../../contexts/Context";
 import styled from "styled-components";
 
 export default function RegistrationPage() {
