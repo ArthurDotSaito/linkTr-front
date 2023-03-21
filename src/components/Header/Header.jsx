@@ -38,7 +38,7 @@ export default function Header() {
    
   const searchForUser = (query) => {
     axios
-      .get(`http://localhost:5000/search?q=${query}`)
+      .get(`${process.env.REACT_APP_API_URL}/search?q=${query}`)
       .then((response) => {
         setUsers(response.data);
         setShowResults(true);

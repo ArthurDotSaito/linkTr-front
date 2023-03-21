@@ -19,7 +19,7 @@ export default function Timeline() {
             headers: { Authorization: `Bearer ${token}` }
         }
 
-        const requisicao = axios.post(`http://localhost:5000/timelines`, {
+        const requisicao = axios.post(`${process.env.REACT_APP_API_URL}/timelines`, {
             url,
             description,
         }, config);
@@ -43,7 +43,7 @@ export default function Timeline() {
     const location = useLocation();
     useEffect(() => {
         if (id === undefined) {
-            const promise = axios.get(`http://localhost:5000/timelines`);
+            const promise = axios.get(`${process.env.REACT_APP_API_URL}/timelines`);
             promise.then((response) => {
                 setPosts(response.data);
                 console.log(response.data);
@@ -52,7 +52,7 @@ export default function Timeline() {
                 console.log(erro);
             })
         }
-        const promise = axios.get(`http://localhost:5000/timelines/${id}`);
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timelines/${id}`);
         promise.then((response) => {
             setPosts(response.data);
             console.log(response.data);
