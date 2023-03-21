@@ -111,15 +111,5 @@ const ModalContainer = styled(Modal)`
         color: white;
     };
 `
-import { DeleteIconContainer,DeleteIcon } from "./DeleteIconStyled";
-import recycleBin from '../../assets/recycleBin.svg'
 
-export default function RecycleBin(){
 
-    return(
-        <DeleteIconContainer>
-            <DeleteIcon src={recycleBin}></DeleteIcon>
-
-        </DeleteIconContainer>
-    )
-} 

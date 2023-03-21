@@ -5,14 +5,10 @@ import {
   Logout,
   SearchBarContainer,
 } from "./HeaderStyled";
-import Vector from "../../assets/Vector.svg";
 import logoutVectorUp from "../../assets/logoutVectorUp.svg";
-import DebounceInput from "react-debounce-input";
-import styled from "styled-components";
 import React, { useContext, useState } from "react";
 import UserContext from "../../contexts/Context";
 import { useNavigate, Link } from "react-router-dom";
-import { HeaderPageContainer, ProfileImage, ProfileSettings,Logout, SearchBarContainer} from "./HeaderStyled";
 import Vector from '../../assets/Vector.svg';
 import DebounceInput from 'react-debounce-input';
 import styled from "styled-components";

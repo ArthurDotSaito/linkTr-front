@@ -1,15 +1,26 @@
 import styled from "styled-components";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import Trendings from "./components/trendings/trendings"
+import { ReactTagify } from "react-tagify";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
 import Header from "./components/Header/Header";
 import RecycleBin from "./components/deleteIcon/DeleteIcon";
+import EditIcon from "./components/editIcon/EditIcon";
+import LikeIcon from "./components/likeIcon/LikeIcon";
+import LikeList from "./components/peopleWhoLike/LikeList";
 
 export default function Timeline() {
     const [url, setUrl] = useState("");
     const [description, setDescription] = useState("");
     const [posts, setPosts] = useState([]);
+    const navigate = useNavigate();
     const token = localStorage.getItem('token');
-    console.log(headers)   
+    const [numLikes, setNumLikes] = useState({})
+    const [editing, setEditing] = useState(false);
+    const descriptionRef = useRef(null);   
+    const [loaded, setLoaded] = useState(false);
+    const {id} = useParams();
 
     function Postar(event) {
         event.preventDefault();
@@ -43,7 +54,7 @@ export default function Timeline() {
     const location = useLocation();
     useEffect(() => {
         if (id === undefined) {
-            const promise = axios.get(`${process.env.REACT_APP_API_URL}/timelines`);
+            const promise = axios.get(`http://localhost:5000/timelines`);
             promise.then((response) => {
                 setPosts(response.data);
                 console.log(response.data);
@@ -52,7 +63,7 @@ export default function Timeline() {
                 console.log(erro);
             })
         }
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timelines/${id}`);
+        const promise = axios.get(`http://localhost:5000/timelines/${id}`);
         promise.then((response) => {
             setPosts(response.data);
             console.log(response.data);
@@ -86,31 +97,71 @@ export default function Timeline() {
                         <Publish onClick={Postar}>Publish</Publish>
                     </div>
                 </PublishPost>
-                    {posts.map((post,index) => 
+                {posts.map((post,index) => 
                     <UserPost key={index} className="userPost">
-                        <ImageName className="imageName">
-                            <LeftInformations>
-                                <ImageUser src={post.image}/>
-                                <InfoUser className="infoUser">
-                                    <p>{post.name}</p>
-                                    <p>{post.description}</p>
-                                </InfoUser>
-                            </LeftInformations>
-                            <RecycleBin></RecycleBin>
-                        </ImageName>
+                    <ImageName className="imageName">
+                    <LeftInformations>
+                            <ImageUser src={post.image}/>
+                            <InfoUser className="infoUser">
+                                <p>{post.name}</p>
+                                <ReactTagify
+                                tagStyle={tagStyle}
+                                tagClicked={tag => navigate("/hashtag/" + tag)}
+                            >
+                                <p>{post.description}</p>
+                                </ReactTagify>
+                            </InfoUser>
+                        </LeftInformations>
+                        <UserOptions>
+                            <EditIcon 
+                                idPost={post.postid} 
+                                posts={posts} 
+                                setPosts={setPosts}></EditIcon>
+                            <RecycleBin idPost={post.postid} posts={posts} setPosts={setPosts}></RecycleBin>
+                        </UserOptions>
+                    </ImageName>
+                    <LikeAndContentContainer>
+                    <LikeContainer>
+                            <LikeIcon
+                                idPost = {post.postid}
+                                likes = {post.likes}
+                                updateLikes = {(newLikes) =>{
+                                    setNumLikes({...numLikes,[post.postid]: newLikes})
+                                }}>
+                            </LikeIcon>
+                            {/* <LikeList
+                                idPost = {post.postid}
+                                likes = {post.likes}
+                                numLikes = {numLikes[post.postid]}>
+                            </LikeList> */}
+                        </LikeContainer>
                         <ImageUrl>
                             <Urls>
                                 <p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><p>{post.url}</p> 
                             </Urls>
                             <img src={post.imageUrl} />
                         </ImageUrl>
-                        
-                    </UserPost>
+                    </LikeAndContentContainer>
+                </UserPost>
                     )}
             </MainPageContainer>
         </>
     )
 }
+const tagStyle = {
+    color: 'white',
+    fontWeight: 500,
+    cursor: 'pointer'
+}
+
+const MainPageContainer = styled.main`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
+
+
 const Urls = styled.div`
     display:flex;
     flex-direction:column;
@@ -231,14 +282,7 @@ const InfoUser = styled.div`
     }
 `
 
-const Header = styled.div`
-    position: absolute;
-    width: 1440px;
-    height: 72px;
-    left: 0px;
-    top: 0px;
-    background: #151515;
- `;
+
 const Title = styled.div`
     position: absolute;
     width: 108px;
