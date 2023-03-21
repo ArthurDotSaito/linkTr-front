@@ -27,7 +27,7 @@ export default function TimelineHashtag() {
         }
 
 
-        const requisicao = axios.post("http://localhost:5000/timelines", {
+        const requisicao = axios.post("${process.env.REACT_APP_API_URL}/timelines", {
             url,
             description,
         },config);
@@ -42,7 +42,7 @@ export default function TimelineHashtag() {
 
 
     useEffect(() => {
-        const promise = axios.get(`http://localhost:5000/timelines`);
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timelines`);
         promise.then((response) => {
             setPosts(response.data);
             console.log(response.data);

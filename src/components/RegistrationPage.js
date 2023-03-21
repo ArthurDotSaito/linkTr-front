@@ -23,7 +23,7 @@ export default function RegistrationPage() {
       pictureUrl: pictureUrl,
     };
 
-    const promise = axios.post(`http://localhost:5000/signup`, request);
+    const promise = axios.post(`${process.env.REACT_APP_API_URL}/signup`, request);
     promise.then(() => {
       setIsLoading(false);
       navigate("/");

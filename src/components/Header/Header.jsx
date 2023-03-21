@@ -5,21 +5,20 @@ import {
   Logout,
   SearchBarContainer,
 } from "./HeaderStyled";
+import Vector from "../../assets/Vector.svg";
 import logoutVectorUp from "../../assets/logoutVectorUp.svg";
-import React, { useContext, useState } from "react";
-import UserContext from "../../contexts/Context";
-import { useNavigate, Link } from "react-router-dom";
-import Vector from '../../assets/Vector.svg';
-import DebounceInput from 'react-debounce-input';
+import DebounceInput from "react-debounce-input";
 import styled from "styled-components";
 import axios from "axios";
+import React, { useContext } from "react";
+import UserContext from "../../contexts/Context";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const [users, setUsers] = React.useState([]);
   const [showResults, setShowResults] = React.useState(false);
   const [turn, setTurn] = React.useState(false);
   const { setToken, setUser, token } = useContext(UserContext);
-  const [posts, setPosts] = useState([]);
 
   const navigate = useNavigate();
   React.useEffect(() => {
@@ -30,12 +29,14 @@ export default function Header() {
   });
   React.useEffect(() => {
     setShowResults(users.length > 0);
+    console.log(showResults);
   }, [users, showResults]);
-   
+
   const searchForUser = (query) => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/search?q=${query}`)
       .then((response) => {
+        console.log(response.data);
         setUsers(response.data);
         setShowResults(true);
       })
@@ -43,6 +44,7 @@ export default function Header() {
         console.error(error);
       });
   };
+
   const handleChange = (event) => {
     const query = event.target.value;
     if (query.length >= 3) {
@@ -66,41 +68,6 @@ export default function Header() {
     setUser({});
     navigate("/");
   }
-
-    return(
-        <HeaderPageContainer>
-            <h1>linkr</h1>
-            <SearchBarContainer>
-                <SearchBar
-                    placeholder="Search for people"
-                    minLength={3}
-                    debounceTimeout={300}
-                    onChange={handleChange}
-                    ></SearchBar>
-                {showResults && (
-                <ResultsContainer>
-                    {users.length === 0 ? (
-                    <NoResults>No results found.</NoResults>
-                    ) : (
-                    users.map(user => (
-                        <Link to={`/timelines/${user.id}`}>
-                            <Result key={user.id} onClick={() => console.log(user.id)}>
-                              <Avatar src={user.icon} />
-                              <Username>{user.username}</Username>
-                            </Result>
-                          </Link>
-
-                    ))
-                    )}
-                </ResultsContainer>
-                )}
-            </SearchBarContainer>
-            <ProfileSettings>
-                <Logout src={Vector}/>
-                <ProfileImage/>
-            </ProfileSettings>
-        </HeaderPageContainer>
-    )
 
   const bla = users.map((user) => {
     console.log(user.username);
@@ -150,8 +117,6 @@ export default function Header() {
     </HeaderPageContainer>
   );
 }
-
-
 
 const SearchBar = styled(DebounceInput)`
   width: 100%;
