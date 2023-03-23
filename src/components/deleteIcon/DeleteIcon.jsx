@@ -12,7 +12,7 @@ export default function RecycleBin(props){
     const token = localStorage.getItem('token');
 
     React.useEffect(() => {
-        const promise = axios.get(`http://localhost:5000/timelines`);
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timelines`);
         promise.then((response) => {
             props.setPosts(response.data);
             console.log(response.data); 
@@ -37,10 +37,10 @@ export default function RecycleBin(props){
     const handleDeleteConfirm = async (postId) => {
         try {
           setIsLoading(true);
-          await axios.delete(`http://localhost:5000/timelines/${postId}`, config);
+          await axios.delete(`${process.env.REACT_APP_API_URL}/${postId}`, config);
           setIsLoading(false);
           setModalIsOpen(false);
-          const response = await axios.get(`http://localhost:5000/timelines`);
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/timelines`);
           props.setPosts(response.data);
         } catch (error) {
           console.error(error);
@@ -111,3 +111,5 @@ const ModalContainer = styled(Modal)`
         color: white;
     };
 `
+
+

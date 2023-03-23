@@ -15,7 +15,7 @@ export default function LikeIcon(props){
       };
       if (isLiked) {
         axios
-          .put(`http://localhost:5000/likes/${props.idPost}`, { type: 'remove' }, config)
+          .put(`${process.env.REACT_APP_API_URL}/${props.idPost}`, { type: 'remove' }, config)
           .then((response) => {
             setIsLiked(false);
             const newLikes = likes - 1;
@@ -25,7 +25,7 @@ export default function LikeIcon(props){
           .catch((error) => console.log(error));
       } else {
         axios
-          .put(`http://localhost:5000/likes/${props.idPost}`, { type: 'add' }, config)
+          .put(`${process.env.REACT_APP_API_URL}/${props.idPost}`, { type: 'add' }, config)
           .then((response) => {
             setIsLiked(true);
             const newLikes = likes + 1;

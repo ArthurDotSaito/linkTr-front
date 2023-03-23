@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import axios from "axios";
 import Treandings from "../../components/trendings/trendings"
-import { ReactTagify } from "react-tagify";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import Header from "../../components/Header/Header";

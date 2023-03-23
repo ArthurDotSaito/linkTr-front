@@ -1,15 +1,18 @@
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 import { useState } from "react";
-import RegistrationPage from "./components/RegistrationPage";
-import LoginPage from "./components/LoginPage";import Timeline from "./Timeline";
+import RegistrationPage from "./pages/Registration/RegistrationPage";
+import LoginPage from "./pages/Login/LoginPage";
+import Timeline from "./pages/timeline/Timeline";
 import UserContext from "./contexts/Context";
-import TimelineHashtag from "./components/timelineHashtag";
+import TimelineHashtag from "./pages/timelineHashtag/timelineHashtag";
+
 
 function App() {
   const [user, setUser] = useState({});
   const [token, setToken] = useState(localStorage.getItem("token"));
   const contextValue = { user, setUser, token, setToken };
+
 
   return (
     <UserContext.Provider value={contextValue}>
@@ -17,7 +20,8 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/signup" element={<RegistrationPage />} />
-          <Route path="/timeline" element={<Timeline />} />
+          <Route path="/timelines" element={<Timeline />} />
+          <Route path="/timelines/:id" element={<Timeline />} />
           <Route path="/hashtag/:hashtag" element={<TimelineHashtag/>} />
         </Routes>
       </BrowserRouter>
