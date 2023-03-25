@@ -8,12 +8,12 @@ export default function PostList(props){
     return(
         <PostListContainer>
             {props.posts.map((post,index) => 
-                <UserPost key={index} className="userPost">
+                <UserPost data-test="post" key={index} className="userPost">
                 <ImageName className="imageName">
                 <LeftInformations className="LeftInformations">
                         <ImageUser src={post.image}/>
                         <InfoUser className="infoUser">
-                            <p>{post.name}</p>
+                            <p data-test="username">{post.name}</p>
         {/*                     <ReactTagify
                             tagStyle={tagStyle}
                             tagClicked={tag => navigate("/hashtag/" + tag)}
@@ -47,7 +47,9 @@ export default function PostList(props){
                     </LikeContainer>
                     <ImageUrl>
                         <Urls>
-                            <p>{post.titleUrl}</p><p>{post.descriptionUrl}</p><p>{post.url}</p> 
+                            <p className="postTile">{post.titleUrl}</p>
+                            <p className="postDescription" data-test="description">{post.descriptionUrl}</p>
+                            <p className="postURL" data-test="link">{post.url}</p> 
                         </Urls>
                         <img src={post.imageUrl} />
                     </ImageUrl>

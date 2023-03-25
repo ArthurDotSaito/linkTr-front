@@ -98,6 +98,7 @@ export const ImageUrl = styled.div`
 export const Urls = styled.div`
     display:flex;
     flex-direction:column;
+    justify-content: space-around;
     p:nth-child(1){
         font-family: 'Lato';
         font-style: normal;
@@ -115,6 +116,7 @@ export const Urls = styled.div`
         line-height: 13px;
         color: #9B9595;
         padding: 10px;
+        max-width: 100%;
     }
     p:nth-child(3){
         padding-top:13px;
