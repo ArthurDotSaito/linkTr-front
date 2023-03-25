@@ -7,6 +7,7 @@ import { useEffect, useState, useRef } from "react";
 import Header from "../../components/Header/Header";
 import PublishPost from "../../components/PublishPost/PublishPost";
 import PostList from "../../components/PostList/PostList";
+import InfiniteScroll from 'react-infinite-scroller';
 
 export default function Timeline() {
     const [posts, setPosts] = useState([]);
@@ -16,6 +17,8 @@ export default function Timeline() {
     const descriptionRef = useRef(null);   
     const [loaded, setLoaded] = useState(true);
     const {id} = useParams();
+    const [page, setPage] = useState(0);
+    const [hasMore, setHasMore] = useState(true);
 
     const config = {
         headers: { Authorization: `Bearer ${token}` }
@@ -49,6 +52,14 @@ export default function Timeline() {
 
     useTimeline()
 
+    const loadPosts = async () => {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/timelines?page=${page}&limit=10`);
+        const newPosts = res.data;
+        setPosts((prevPosts) => [...prevPosts, ...newPosts]);
+        setPage((prevPage) => prevPage + 1);
+        setHasMore(newPosts.length > 0);
+      };
+
     return (
         <>
             <Header>
@@ -61,17 +72,30 @@ export default function Timeline() {
                     token={token}>
                 </PublishPost>
                 {loaded ? <LoadingMessage>Loading...</LoadingMessage> : 
-                <PostList
-                    posts={posts}
-                    setPosts={setPosts}
-                    token={token}
-                    numLikes={numLikes}
-                    setNumLikes={setNumLikes}>
-                </PostList>}
+                <InfiniteScrollStyled
+                    pageStart={1}
+                    loadMore={loadPosts}
+                    hasMore={hasMore}
+                    loader={<LoadingMessage key={0}>Loading...</LoadingMessage>}>
+                    <PostList
+                        posts={posts}
+                        setPosts={setPosts}
+                        token={token}
+                        numLikes={numLikes}
+                        setNumLikes={setNumLikes}>
+                    </PostList>
+                </InfiniteScrollStyled>}
             </MainPageContainer>
         </>
     )
 }
+const InfiniteScrollStyled = styled(InfiniteScroll)`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+`
 
 const tagStyle = {
     color: 'white',
