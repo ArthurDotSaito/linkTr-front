@@ -3,10 +3,22 @@ import RecycleBin from "../../components/deleteIcon/DeleteIcon";
 import EditIcon from "../../components/editIcon/EditIcon";
 import LikeIcon from "../../components/likeIcon/LikeIcon";
 import LikeList from "../../components/peopleWhoLike/LikeList";
+import UpdatePostsButton from "../UpdatePostsButton/UpdatePostsButton";
 export default function PostList(props){
+
+    console.log(props.posts)
+    console.log(props.postToUpdate)
 
     return(
         <PostListContainer>
+            {props.postToUpdate !== 0 && 
+                <UpdatePostsButton 
+                    posts={props.posts}
+                    setPosts={props.setPosts}
+                    postsToUpdate={props.postsToUpdate}
+                    setPostToUpdate={props.setPostToUpdate}
+                    updatedPosts={props.updatedPosts}
+                    />}
             {props.posts.map((post,index) => 
                 <UserPost data-test="post" key={index} className="userPost">
                 <ImageName className="imageName">
