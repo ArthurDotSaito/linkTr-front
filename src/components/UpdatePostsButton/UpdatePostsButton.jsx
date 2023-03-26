@@ -5,7 +5,7 @@ export default function UpdatePostsButton(props){
 
     return(
         <UpdatePostsButtonContainer
-            data-test="laod-btn"
+            data-test="load-btn"
             onClick={() =>{
                 props.setPosts([...props.updatedPosts,...props.posts])
                 props.setPostToUpdate(0)
