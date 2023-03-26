@@ -8,6 +8,7 @@ import Header from "../../components/Header/Header";
 import PublishPost from "../../components/PublishPost/PublishPost";
 import PostList from "../../components/PostList/PostList";
 import InfiniteScroll from 'react-infinite-scroller';
+import {useInterval} from 'use-interval'
 
 export default function Timeline() {
     const [posts, setPosts] = useState([]);
@@ -19,6 +20,10 @@ export default function Timeline() {
     const {id} = useParams();
     const [page, setPage] = useState(0);
     const [hasMore, setHasMore] = useState(true);
+    const [gotPosts, setGotPosts] = useState(false)
+    const [updatedPosts, setUpdatedPosts] = useState([]);
+    const [postToUpdate, setPostToUpdate] = useState(0);
+    const [sentPostUpdateRequest,setSentPostUpdateRequest] = useState(false);
 
     const config = {
         headers: { Authorization: `Bearer ${token}` }
@@ -32,7 +37,6 @@ export default function Timeline() {
             promise.then((response) => {
                 setPosts(response.data);
                 setLoaded(false);
-                console.log(response.data);
             });
             promise.catch((erro) => {
                 console.log(erro);
@@ -58,7 +62,44 @@ export default function Timeline() {
         setPosts((prevPosts) => [...prevPosts, ...newPosts]);
         setPage((prevPage) => prevPage + 1);
         setHasMore(newPosts.length > 0);
-      };
+    };
+
+    useEffect(() => {
+        if (updatedPosts.length !== postToUpdate) {
+            for (let i = 0; i < updatedPosts.length; i++) {
+                if (updatedPosts[i].postId === posts[0].postId) {
+                    setPostToUpdate(updatedPosts.slice(0, i).length)
+                    setUpdatedPosts(updatedPosts.slice(0, i))
+                }
+            }
+        }
+    }, [updatedPosts])
+
+    async function handleUpdatedPosts(setGotPosts, setUpdatedPosts, setSentPostUpdateRequest){
+        const posts = axios.get(`${process.env.REACT_APP_API_URL}/timelines`);
+        posts.then((response) => {
+            console.log("handleUpdateRequest")
+            setUpdatedPosts(response.data);
+            console.log(response.data);
+        });
+        posts.catch((erro) => {
+            console.log(erro);
+        })
+        if(posts){
+            setGotPosts(posts)
+            setSentPostUpdateRequest(false)
+        }
+    }
+    console.log(updatedPosts)
+
+    useInterval(() => {
+        if (posts.length > 0 && !sentPostUpdateRequest && posts.length >= 10) {
+            console.log("Tentei atualizar a cada 15s")
+            setSentPostUpdateRequest(true)
+            handleUpdatedPosts(setGotPosts, setUpdatedPosts, setSentPostUpdateRequest)
+        }
+    }, 15000)
+
 
     return (
         <>
@@ -82,7 +123,11 @@ export default function Timeline() {
                         setPosts={setPosts}
                         token={token}
                         numLikes={numLikes}
-                        setNumLikes={setNumLikes}>
+                        setNumLikes={setNumLikes}
+                        postToUpdate={postToUpdate}
+                        updatedPosts={updatedPosts}
+                        setPostToUpdate={setPostToUpdate}
+                        >
                     </PostList>
                 </InfiniteScrollStyled>}
             </MainPageContainer>
