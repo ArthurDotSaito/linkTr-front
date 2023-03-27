@@ -25,7 +25,7 @@ export default function Timeline() {
     const location = useLocation();
     useEffect(() => {
         if (id === undefined) {
-            const promise = axios.get(`${process.env.REACT_APP_API_URL}/timelines`);
+            const promise = axios.get(`http://localhost:5000/timelines`);
             promise.then((response) => {
                 setPosts(response.data);
                 setLoaded(false);
@@ -35,7 +35,7 @@ export default function Timeline() {
                 console.log(erro);
             })
         }
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timelines/${id}`);
+        const promise = axios.get(`http://localhost:5000/timelines/${id}`);
         promise.then((response) => {
             setPosts(response.data);
             setLoaded(false)
@@ -47,7 +47,9 @@ export default function Timeline() {
     }, [location]);
     }
 
-    useTimeline()
+    useTimeline();
+
+    
 
     return (
         <>

@@ -13,7 +13,7 @@ export default function PublishPost(props){
             headers: { Authorization: `Bearer ${props.token}` }
         }
 
-        const requisicao = axios.post(`${process.env.REACT_APP_API_URL}/timelines`, {
+        const requisicao = axios.post(`http://localhost:5000/timelines`, {
             url,
             description,
         }, config);
