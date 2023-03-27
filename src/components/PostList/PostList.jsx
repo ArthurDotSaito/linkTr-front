@@ -35,7 +35,7 @@ export default function PostList(props) {
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     }
-     const request = axios.post(`http://localhost:5000/comments`, {
+     const request = axios.post(`${process.env.REACT_APP_API_URL}/comments`, {
         comment:commentUser,
         postId:Number(postid)
      },config);
@@ -50,7 +50,7 @@ export default function PostList(props) {
 
 
   function ShowComments(postid){
-    const promise = axios.get(`http://localhost:5000/comments/${postid}`);
+    const promise = axios.get(`${process.env.REACT_APP_API_URL}/comments/${postid}`);
     promise.then((response) => {
         console.log(response.data);
         console.log(response.data.length);
@@ -101,11 +101,11 @@ export default function PostList(props) {
                                     props.setNumLikes({ ...props.numLikes, [post.postid]: newLikes })
                                 }}>
                             </LikeIcon>
-                            {/* <LikeList
+                            <LikeList
                             idPost = {post.postid}
                             likes = {post.likes}
                             numLikes = {props.numLikes[post.postid]}>
-                        </LikeList>  */}
+                        </LikeList> 
                         <p onClick={() => {toggleFunction(post.postid);ShowComments(post.postid);console.log(showPost)}}>{countComment} comments</p>
 
                         </LikeContainer>

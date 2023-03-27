@@ -19,7 +19,7 @@ export default function RegistrationPage() {
       password: password,
     };
 
-    const promise = axios.post(`http://localhost:5000/signin`, request);
+    const promise = axios.post(`${process.env.REACT_APP_API_URL}/signin`, request);
     promise.then((res) => {
       localStorage.setItem("token", res.data.token);
       setToken(res.data.token);
