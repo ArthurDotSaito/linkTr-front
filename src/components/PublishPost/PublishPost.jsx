@@ -31,14 +31,24 @@ export default function PublishPost(props){
     };
 
     return(
-        <PublishPostContainer>
+        <PublishPostContainer data-test="publish-box">
             <Post>
             <img src="" />
             <div>
                 <p>What are you going to share today?</p>
-                <InputUrl type="text" placeholder="http:// ..." value={url} onChange={(e) => setUrl(e.target.value)}></InputUrl>
-                <InputDescription type="text" placeholder="Awesome article about #javascript" value={description} onChange={(e) => setDescription(e.target.value)}></InputDescription>
-                <Publish onClick={Postar}>Publish</Publish>
+                <InputUrl
+                    data-test="link" 
+                    type="text" 
+                    placeholder="http:// ..." 
+                    value={url} 
+                    onChange={(e) => setUrl(e.target.value)}></InputUrl>
+                <InputDescription 
+                    data-test="description" 
+                    type="text" 
+                    placeholder="Awesome article about #javascript" 
+                    value={description} 
+                    onChange={(e) => setDescription(e.target.value)}></InputDescription>
+                <Publish onClick={Postar} data-test="publish-btn">Publish</Publish>
             </div>
             </Post>
         </PublishPostContainer>

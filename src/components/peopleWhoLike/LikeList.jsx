@@ -2,7 +2,7 @@ import { LikeListContainer } from "./LikeListStyled"
 
 export default function LikeList(props){
 
-    const numLikes = Object.values(props.likes).reduce((acc, val) => acc + val, 0);
+    const numLikes = props.likes
 
     return(
         <LikeListContainer > 

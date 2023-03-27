@@ -14,8 +14,7 @@ export default function RecycleBin(props){
     React.useEffect(() => {
         const promise = axios.get(`http://localhost:5000/timelines`);
         promise.then((response) => {
-            props.setPosts(response.data);
-            console.log(response.data); 
+            props.setPosts(response.data); 
         });
         promise.catch((erro) => {
             console.log(erro);

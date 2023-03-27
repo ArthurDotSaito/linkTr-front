@@ -74,6 +74,33 @@ export default function PostList(props) {
                             <InfoUser className="infoUser">
                                 <p>{post.name}</p>
                                 {/*                     <ReactTagify
+=======
+import LikeList from "../../components/peopleWhoLike/LikeList";
+import UpdatePostsButton from "../UpdatePostsButton/UpdatePostsButton";
+export default function PostList(props){
+
+    console.log(props.posts)
+    console.log(props.postToUpdate)
+
+    return(
+        <PostListContainer>
+            {props.postToUpdate !== 0 && 
+                <UpdatePostsButton 
+                    posts={props.posts}
+                    setPosts={props.setPosts}
+                    postsToUpdate={props.postsToUpdate}
+                    setPostToUpdate={props.setPostToUpdate}
+                    updatedPosts={props.updatedPosts}
+                    />}
+            {props.posts.map((post,index) => 
+                <UserPost data-test="post" key={index} className="userPost">
+                <ImageName className="imageName">
+                <LeftInformations className="LeftInformations">
+                        <ImageUser src={post.image}/>
+                        <InfoUser className="infoUser">
+                            <p data-test="username">{post.name}</p>
+        {/*                     <ReactTagify
+>>>>>>> 7217e213206309c890ba32f9286b5f2a41e3bf40
                             tagStyle={tagStyle}
                             tagClicked={tag => navigate("/hashtag/" + tag)}
                         >
@@ -154,6 +181,19 @@ export default function PostList(props) {
 
                 </UserPost>
 
+=======
+                    </LikeContainer>
+                    <ImageUrl>
+                        <Urls>
+                            <p className="postTile">{post.titleUrl}</p>
+                            <p className="postDescription" data-test="description">{post.descriptionUrl}</p>
+                            <p className="postURL" data-test="link">{post.url}</p> 
+                        </Urls>
+                        <img src={post.imageUrl} />
+                    </ImageUrl>
+                </LikeAndContentContainer>
+            </UserPost>
+>>>>>>> 7217e213206309c890ba32f9286b5f2a41e3bf40
             )}
             
 

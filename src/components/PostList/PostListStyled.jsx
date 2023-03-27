@@ -104,6 +104,7 @@ export const Urls = styled.div`
     display:flex;
     flex-direction:column;
     width:503px;
+    justify-content: space-around;
     p:nth-child(1){
         font-family: 'Lato';
         font-style: normal;
@@ -125,7 +126,8 @@ export const Urls = styled.div`
         width: 302.82px;
         padding-top:5px;
         padding-left:20px;
-
+        padding: 10px;
+        max-width: 100%;
     }
     p:nth-child(3){
         font-family: 'Lato';
