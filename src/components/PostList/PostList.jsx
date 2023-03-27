@@ -10,12 +10,16 @@ import {
   LikeContainer,
   ImageUrl,
   Urls,
+  tagStyle,
 } from "./PostListStyled";
 import RecycleBin from "../../components/deleteIcon/DeleteIcon";
 import EditIcon from "../../components/editIcon/EditIcon";
 import LikeIcon from "../../components/likeIcon/LikeIcon";
 import LikeList from "../../components/peopleWhoLike/LikeList";
+import { ReactTagify } from "react-tagify";
+import { useNavigate } from "react-router-dom";
 export default function PostList(props) {
+  const navigate = useNavigate();
   return (
     <PostListContainer>
       {props.posts.map((post, index) => (

@@ -6,6 +6,7 @@ import LoginPage from "./pages/Login/LoginPage";
 import Timeline from "./pages/timeline/Timeline";
 import UserContext from "./contexts/Context";
 import TimelineHashtag from "./pages/timelineHashtag/timelineHashtag";
+import TimelineUser from "./pages/timeline/userTimeline";
 
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/signup" element={<RegistrationPage />} />
           <Route path="/timelines" element={<Timeline />} />
-          <Route path="/timelines/:id" element={<Timeline />} />
+          <Route path="/timelines/:id" element={<TimelineUser />} />
           <Route path="/hashtag/:hashtag" element={<TimelineHashtag/>} />
         </Routes>
       </BrowserRouter>

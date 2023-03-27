@@ -131,3 +131,8 @@ export const Urls = styled.div`
         text-overflow: ellipsis;
     }
 `
+export const tagStyle = {
+    color: 'white',
+    fontWeight: 500,
+    cursor: 'pointer'
+}
