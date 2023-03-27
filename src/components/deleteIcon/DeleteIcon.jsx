@@ -12,7 +12,7 @@ export default function RecycleBin(props){
     const token = localStorage.getItem('token');
 
     React.useEffect(() => {
-        const promise = axios.get(`${process.env.REACT_APP_API_URL}/timelines`);
+        const promise = axios.get(`http://localhost:5000/timelines`);
         promise.then((response) => {
             props.setPosts(response.data); 
         });

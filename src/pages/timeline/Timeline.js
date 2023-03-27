@@ -54,7 +54,9 @@ export default function Timeline() {
     }, [location]);
     }
 
-    useTimeline()
+    useTimeline();
+
+    
 
     const loadPosts = async () => {
         const res = await axios.get(`${process.env.REACT_APP_API_URL}/timelines?page=${page}&limit=10`);
